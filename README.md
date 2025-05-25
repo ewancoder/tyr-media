@@ -140,3 +140,7 @@ Just run `./update.sh`.
 
 - Sign up / Sign in
 - TODO: WIP: Set up
+
+### Additional Jellyfin setup (users / preferences)
+
+- Add needed users with default settings, access to ALL libraries
