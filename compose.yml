@@ -141,7 +141,7 @@ services:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
       - TZ=${TIMEZONE}
-      #- NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_VISIBLE_DEVICES=all
     volumes:
       - ${JELLYFIN_FOLDER}:/config
       - ${TV_SHOWS_FOLDER}:/data/tvshows
@@ -149,13 +149,13 @@ services:
       - ${DOWNLOADS_FOLDER}:/data/downloads
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
-#    deploy:
-#      resources:
-#        reservations:
-#          devices:
-#            - driver: nvidia
-#              count: 1
-#              capabilities: [gpu]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:8096 || exit 1"]
 
