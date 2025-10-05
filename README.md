@@ -125,6 +125,8 @@ Just run `./update.sh`.
   - Disable everything but scrobbling (and also leave sync FROM trakt TO jellyfin ON)
   - Sign in
 
+- Playback - Transcoding - NVENC + Enable for everything
+
 - TODO: WIP - set up Jellyfin user / dashboard / other users
 
 ### Set up Jellyseerr
