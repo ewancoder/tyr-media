@@ -1,0 +1,77 @@
+# No VPN, no *arr services - pure torrent and jellyfin
+name: tyr-media
+
+networks:
+  tyr-media-net:
+    name: tyr-media-net
+
+services:
+  tyr-media-qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: tyr-media-qbittorrent
+    environment:
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${QBITTORRENT_FOLDER}:/config
+      - ${DOWNLOADS_FOLDER}:/downloads
+    restart: unless-stopped
+    networks:
+      - tyr-media-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:8080 || exit 1"]
+    ports:
+      - ${QBITTORRENT_WEBUI_PORT}:8080
+
+  tyr-media-jellyfin:
+    image: lscr.io/linuxserver/jellyfin:latest
+    container_name: tyr-media-jellyfin
+    environment:
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - TZ=${TIMEZONE}
+      - NVIDIA_VISIBLE_DEVICES=all
+    volumes:
+      - ${JELLYFIN_FOLDER}:/config
+      - ${DOWNLOADS_FOLDER}:/data/downloads
+    restart: unless-stopped
+    networks:
+      - tyr-media-net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:8096 || exit 1"]
+    ports:
+      - ${JELLYFIN_PORT}:8096
+      - 8920:8920 # Jellyfin optional
+      - 7359:7359/udp # Jellyfin optional
+      - 1900:1900/udp # Jellyfin optional
+
+  tyr-media-homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: tyr-media-homepage
+    environment:
+      HOMEPAGE_ALLOWED_HOSTS: ${HOSTNAME}
+      PUID: ${USER_ID}
+      PGID: ${GROUP_ID}
+    ports:
+      - 80:3000
+    volumes:
+      - ${HOMEPAGE_FOLDER}:/app/config
+      - type: bind
+        source: ./homepage/bookmarks.yaml
+        target: /app/config/bookmarks.yaml
+      - type: bind
+        source: ./homepage/services.yaml
+        target: /app/config/services.yaml
+    restart: unless-stopped
+    networks:
+      - tyr-media-net
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider http://127.0.0.1:3000 || exit 1"]
