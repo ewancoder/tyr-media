@@ -3,17 +3,17 @@
 - Media:
     - Request something:
         icon: jellyseerr.png
-        href: http://ivanpc.local:5055
+        href: http://odin.local:5055
         description: Jellyseerr
 
     - Watch something:
         icon: jellyfin.png
-        href: http://ivanpc.local:8096
+        href: http://odin.local:8096
         description: Jellyfin
 
     - Read something:
         icon: kavita.png
-        href: http://ivanpc.local:10888
+        href: http://odin.local:10888
         description: Kavita
 
     - Track it:
@@ -24,17 +24,17 @@
 - Management:
     - Torrents:
         icon: qbittorrent.png
-        href: http://ivanpc.local:8080
+        href: http://odin.local:8080
         description: qBitTorrent
 
     - TV Shows Tracker:
         icon: sonarr.png
-        href: http://ivanpc.local:8989
+        href: http://odin.local:8989
         description: Sonarr
 
     - Movies Tracker:
         icon: radarr.png
-        href: http://ivanpc.local:7878
+        href: http://odin.local:7878
         description: Radarr
 
 - Other:
@@ -50,10 +50,10 @@
 
     - Redis Insights:
         icon: redis.png
-        href: http://ivanpc.local:5540
+        href: http://odin.local:5540
         description: Redis browser for pet projects
 
     - Indexers setup:
         icon: prowlarr.png
-        href: http://ivanpc.local:9696
+        href: http://odin.local:9696
         description: Prowlarr
