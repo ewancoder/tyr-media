@@ -1,0 +1,23 @@
+name: tyr-media
+
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun-vpn
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    environment:
+      - VPN_SERVICE_PROVIDER=private internet access
+      - OPENVPN_USER=${PIA_USER}
+      - OPENVPN_PASSWORD=${PIA_PASSWORD}
+      - SERVER_REGIONS=Netherlands
+      - HTTPPROXY=on
+      #- VPN_PORT_FORWARDING=on
+      #- VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":{{PORTS}}}" http://127.0.0.1:8080/api/v2/app/setPreferences 2>&1'
+    restart: unless-stopped
+    ports:
+      - ${HTTP_PROXY_IP}:${HTTP_PROXY_PORT}:8888/tcp # HTTP proxy
+    healthcheck:
+      test: ["CMD-SHELL", "wget --spider http://localhost:8888 2>&1 | grep -q '400 Bad Request' || exit 1"]
