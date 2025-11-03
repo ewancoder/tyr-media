@@ -1,4 +1,4 @@
-name: tyr-media
+name: gluetun-vpn
 
 services:
   gluetun:
