@@ -1,6 +1,14 @@
 name: gluetun-vpn
 
 services:
+  tinyproxy:
+    image: dannydirect/tinyproxy
+    container_name: tinyproxy
+    restart: unless-stopped
+    ports:
+      - "8887:8888"
+    command: "10.8.0.0/24"
+
   gluetun:
     image: qmcgaw/gluetun
     container_name: gluetun-vpn
