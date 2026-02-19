@@ -9,8 +9,10 @@ if [ ! -f .secrets ]; then
     echo "VPN_SERVER=placeholder" >> .secrets
 fi
 
-source .secrets
+set -a
 source .env
+source .secrets
+set +a
 if [ ! -f ${VPN_WG_CONFIG} ]; then
     echo "WireGuard config file is not found, do you want to create it? (at ${VPN_WG_CONFIG}) (Y/n)"
     read answer
@@ -33,6 +35,10 @@ if [ -f ${VPN_WG_CONFIG} ]; then
     echo "VPN server name: $SERVER_NAME"
 
     sed -i "s/VPN_SERVER=.*/VPN_SERVER=$SERVER_NAME/" .secrets
+
+    set -a
+    source .secrets
+    set +a
 fi
 
 docker compose --env-file .env --env-file .secrets -f compose.yml up -d

@@ -16,16 +16,16 @@ services:
       - ${GLUETUN_FOLDER}:/gluetun
       - ${VPN_WG_CONFIG}:/gluetun/wireguard/wg0.conf
     environment:
-      #- VPN_PORT_FORWARDING_PROVIDER=private internet access
-      #- VPN_PORT_FORWARDING_USERNAME=${PIA_USER}
-      #- VPN_PORT_FORWARDING_PASSWORD=${PIA_PASSWORD}
-      #- SERVER_NAMES=${VPN_SERVER}
-      #- VPN_SERVICE_PROVIDER=custom
-      #- VPN_TYPE=wireguard
-      - VPN_SERVICE_PROVIDER=private internet access
-      - OPENVPN_USER=${PIA_USER}
-      - OPENVPN_PASSWORD=${PIA_PASSWORD}
-      - SERVER_REGIONS=Netherlands
+      - VPN_PORT_FORWARDING_PROVIDER=private internet access
+      - VPN_PORT_FORWARDING_USERNAME=${PIA_USER}
+      - VPN_PORT_FORWARDING_PASSWORD=${PIA_PASSWORD}
+      - SERVER_NAMES=${VPN_SERVER}
+      - VPN_SERVICE_PROVIDER=custom
+      - VPN_TYPE=wireguard
+      #- VPN_SERVICE_PROVIDER=private internet access
+      #- OPENVPN_USER=${PIA_USER}
+      #- OPENVPN_PASSWORD=${PIA_PASSWORD}
+      #- SERVER_REGIONS=Netherlands
 
       - HTTPPROXY=on
       - VPN_PORT_FORWARDING=on
@@ -38,8 +38,9 @@ services:
       - ${SONARR_PORT}:8989
       - ${RADARR_PORT}:7878
       - ${QBITTORRENT_WEBUI_PORT}:8080
-      - ${JELLYSEERR_PORT}:5055
+      - ${SEERR_PORT}:5055
       - ${JELLYFIN_PORT}:8096
+      - ${JELLYSTAT_PORT}:3000
       - 8920:8920 # Jellyfin optional
       - 7359:7359/udp # Jellyfin optional
       - 1900:1900/udp # Jellyfin optional
@@ -84,8 +85,7 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - ${SONARR_FOLDER}:/config
-      - ${TV_SHOWS_FOLDER}:/tv
-      - ${DOWNLOADS_FOLDER}:/downloads
+      - ${DATA_FOLDER}:/data
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
@@ -100,8 +100,7 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - ${RADARR_FOLDER}:/config
-      - ${MOVIES_FOLDER}:/movies
-      - ${DOWNLOADS_FOLDER}:/downloads
+      - ${DATA_FOLDER}:/data
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
@@ -116,24 +115,25 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - ${QBITTORRENT_FOLDER}:/config
-      - ${DOWNLOADS_FOLDER}:/downloads
+      - ${DATA_FOLDER}:/data
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:8080 || exit 1"]
 
-  tyr-media-jellyseerr:
-    image: fallenbagel/jellyseerr:latest
-    container_name: tyr-media-jellyseerr
+  tyr-media-seerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    init: true
+    container_name: tyr-media-seerr
     environment:
       - LOG_LEVEL=debug
       - TZ=${TIMEZONE}
     volumes:
-      - ${JELLYSEERR_FOLDER}:/app/config
+      - ${SEERR_FOLDER}:/app/config
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
-      test: ["CMD-SHELL", "wget --spider http://localhost:5055 || exit 1"]
+      test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
 
   tyr-media-jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
@@ -145,9 +145,7 @@ services:
       - NVIDIA_VISIBLE_DEVICES=all
     volumes:
       - ${JELLYFIN_FOLDER}:/config
-      - ${TV_SHOWS_FOLDER}:/data/tvshows
-      - ${MOVIES_FOLDER}:/data/movies
-      - ${DOWNLOADS_FOLDER}:/data/downloads
+      - ${DATA_FOLDER}:/data
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     deploy:
@@ -169,8 +167,7 @@ services:
       - TZ=${TIMEZONE}
     volumes:
       - ${KAVITA_FOLDER}:/config
-      - ${READS_FOLDER}:/data/reads
-      - ${DOWNLOADS_FOLDER}:/data/downloads
+      - ${DATA_FOLDER}:/data
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
@@ -198,3 +195,32 @@ services:
       - tyr-media-net
     healthcheck:
       test: ["CMD-SHELL", "wget --spider http://127.0.0.1:3000 || exit 1"]
+
+  tyr-media-jellystat-db:
+    image: 'postgres:15.2'
+    shm_size: 1gb
+    container_name: jellystat-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ${JELLYSTAT_FOLDER}/pg:/var/lib/postgresql/data
+    network_mode: service:tyr-media-gluetun
+
+  tyr-media-jellystat:
+    image: 'cyfershepard/jellystat:latest'
+    container_name: jellystat
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_IP: localhost
+      POSTGRES_PORT: 5432
+      JWT_SECRET: my-secret-jwt-key
+      TZ: mytimezone
+    volumes:
+      - ${JELLYSTAT_FOLDER}/config:/app/config
+    network_mode: service:tyr-media-gluetun
+    depends_on:
+      - tyr-media-jellystat-db

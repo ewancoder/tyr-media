@@ -34,6 +34,7 @@ Just run `./update.sh`.
 - Disable localhost authentication
 - Disable authentication for `172.16.0.0/12` address - Docker IP ranges for local addresses
 - Check port, restart EVERYTHING, check port again - should be changed to the one forwarded by PIA
+- Change downloads folder to /data/downloads
 
 - Behavior
   - Show external IP in status bar
@@ -65,9 +66,10 @@ Just run `./update.sh`.
 
 - Profiles
   - Add everything to Any except: BlueRays, top Raw-HD for movies, BR-DISK for movies (leave just remuxes)
+    - Remove all other profiles
   - Upgrades allowed, until Bluray2160p Remux
   - Copy to BadTv quality, disable all 4k and Bluray-1080p Remux, upgrade till Web 1080p
-  - Remove all other profiles
+    - If needed
   - Edit Delay profile: prefer Torrent
   - (todo: consider setting up release profiles)
 
@@ -101,6 +103,8 @@ Just run `./update.sh`.
 
 - Click Sync App Indexers, recheck them in Sonarr & Radarr
 
+> Copy prowlarr.yml to /config/Prowlarr/Definitions/Custom, and add rutracker(movie) instead of rutracker
+
 ### Set up Jellyfin
 
 - Create MY account
@@ -112,22 +116,28 @@ Just run `./update.sh`.
 - Country: USA
 - Auto refresh metadata: 30 days
 - Metadata savers: Nfo
-- Save artwork
+- Save artwork (5 backdrops)
 - (for now leave OFF) - trickplay and chapter images
   - They load the CPU and need video files processing, so leave them off for now, see how it goes
 - Automerge series from different folders
 - English/United States
-- Uncheck allow remote connections
+- Leave checked allow remote connections (cause I'm not sure it hinders localhost)
 
-- Go to dashboard - general - login disclaimer :)
+- Go to dashboard - branding - login disclaimer :)
   - .loginDisclaimer { font-size: 5rem; color: #F55; }
 - Dashboard - Plugins Catalog - Trakt - install, restart, setup
   - Disable everything but scrobbling (and also leave sync FROM trakt TO jellyfin ON)
+    - Latest: just Scrobble, that's all (and first 3 skips, and last don't remove item from trakttv)
   - Sign in
 
 - Playback - Transcoding - NVENC + Enable for everything
 
 - TODO: WIP - set up Jellyfin user / dashboard / other users
+
+- Scan all libraries, check that content is present.
+- Add family user with access to all libraries
+- Set up users (per user)
+  - playback preferred audio/subtitle language, do not play default track always, always play subtitles
 
 ### Set up Jellyseerr
 
