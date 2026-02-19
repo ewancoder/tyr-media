@@ -2,9 +2,9 @@
 
 - Media:
     - Request something:
-        icon: jellyseerr.png
+        icon: seerr.png
         href: http://odin.local:5055
-        description: Jellyseerr
+        description: Seerr
 
     - Watch something:
         icon: jellyfin.png
@@ -20,6 +20,11 @@
         icon: trakt.png
         href: https://trakt.tv
         description: trakt.tv
+
+    - Trakt app:
+        icon: trakt.png
+        href: https://app.trakt.tv
+        description: app.trakt.tv
 
 - Management:
     - Torrents:
@@ -37,23 +42,43 @@
         href: http://odin.local:7878
         description: Radarr
 
-- Other:
-    - Seq logs:
-        icon: seq.png
-        href: https://seq.typingrealm.com
-        description: Logging system for pet projects
-
-    - PgAdmin:
-        icon: pgadmin.png
-        href: https://pgadmin.typingrealm.com
-        description: PostgreSQL browser for pet projects
-
-    - Redis Insights:
-        icon: redis.png
-        href: http://odin.local:5540
-        description: Redis browser for pet projects
-
     - Indexers setup:
         icon: prowlarr.png
         href: http://odin.local:9696
         description: Prowlarr
+
+- Pet projects:
+    - Seq logs:
+        icon: seq.png
+        href: https://seq.typingrealm.org
+        description: Logging system for pet projects
+
+    - PgAdmin:
+        icon: pgadmin.png
+        href: https://pgadmin.typingrealm.org
+        description: PostgreSQL browser for pet projects
+
+    - Redis Insights:
+        icon: redis.png
+        href: https://redisinsight.typingrealm.org
+        description: Redis browser for pet projects
+
+    - KartMan:
+        icon: https://kartman.typingrealm.org/favicon.ico
+        href: https://kartman.typingrealm.org
+        description: Batumi karting manager
+
+    - Habits:
+        icon: https://habits.typingrealm.com/favicon.ico
+        href: https://habits.typingrealm.com
+        description: Personal habits tracker
+
+    - Nitrotype Tracker:
+        icon: https://tnt.typingrealm.org/favicon.ico
+        href: https://tnt.typingrealm.org
+        description: Typing game tracker for KECATS team
+
+    - OverLab:
+        icon: https://overlab.typingrealm.org/favicon.ico
+        href: https://overlab.typingrealm.org
+        description: Bodybuilding progress tracker
