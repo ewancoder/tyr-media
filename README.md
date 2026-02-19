@@ -6,14 +6,16 @@ This is a media server for media library management. It uses PIA WireGuard vpn p
 
 1. Configure mandatory variables in `.env` file:
 
-- `MASTER_FOLDER` - the folder where everything will be stored, you can use symlinks inside it to forward different things into different places
-- `HOSTNAME` - list of allowed hostnames for Homepage service: for example `localhost,ivanpc.local`
+- `MASTER_FOLDER` - the folder where everything will be stored, you can use symlinks inside it to forward different things into different places if you want
+- `HOSTNAME` - list of allowed hostnames for Homepage service: for example `localhost,ivanpc.local` (where ivanpc is your PC domain name)
 
-> If you're using symlinks, make sure folders `$MASTER_FOLDER/downloads` and `$MASTER_FOLDER/media` point to the same physical volume, otherwise hardlinking downloaded media from downloads to media folder won't work and you'll end up with coplete copies of files.
+You do not need to configure anything else in this file unless you want to.
 
-All the other variables are optional, you can use them for fine-tuning your setup.
+2. Start the server:
 
-2. Start the server using `./start.sh` command, enter your PIA credentials - it will generate `.secrets` file in current folder and wireguard configuration. They will be used for VPN connection.
+Use `./start.sh` command, or `./start.sh --timezone Asia/Tbilisi` if you want to specify a particular timezone. By default it will remain `Etc/UTC`.
+
+Enter your PIA credentials when prompted, they will be stored in the `.secrets` file in this folder.
 
 3. At this point, you can test that VPN is working: open browser, set up HTTP proxy on `localhost:PROXY_PORT` (8888 by default), and check your IP address.
 
@@ -23,18 +25,20 @@ Just run `./update.sh`.
 
 ## How to configure
 
-### Fix media folders permissions. If they were created by docker running under root, they will be root-owned, but the services are user-owned, so we need to run:
-
-`sudo chown -R user:user ${MEDIA_FOLDER}`, where `user` - your username, `${MEDIA_FOLDER}` - path taken from `.env` file.
-
-> Consider doing the same for any sub-folders for dowloads: `downloads/custom-media` etc.
+> Go to Homepage, you can click on everything on there so you don't need to remember specific ports.
 
 ### Set up qBitTorrent
 
+> If you run it on a custom port (non-8080) you need to disable header host validation in the config file, otherwise it will just throw Unauthorized and won't show the sign in UI.
+
+- To sign in to qBitTorrent first time - check temporary password in docker container logs
 - Disable localhost authentication
-- Disable authentication for `172.16.0.0/12` address - Docker IP ranges for local addresses
-- Check port, restart EVERYTHING, check port again - should be changed to the one forwarded by PIA
+  - WebUI -> Bypass authentication for clients on localhost
+  - WebUI -> Bypass authentication for clients in whitelisted IP subnets
+    - Include `172.16.0.0/12` address - docker IP ranges for local addresses
+- Update admin password (WebUI, qwerty)
 - Change downloads folder to /data/downloads
+- Check port, restart EVERYTHING, check port again - should be changed to the one forwarded by PIA
 
 - Behavior
   - Show external IP in status bar
@@ -43,10 +47,10 @@ Just run `./update.sh`.
   - Excluded file names: `*.lnk`
 
 - Connection
-  - Uncheck all connections limits
+  - Uncheck all 4 connections limits (global, per torrent, global upload, upload per torrent)
 
 - Speed
-  - Alternative Rate Limits: 1000 upload, 3000 download
+  - Alternative Rate Limits: 4000 upload, 10000 download
 
 - BitTorrent
   - Uncheck Torrent Queueing
@@ -63,23 +67,20 @@ Just run `./update.sh`.
 
 - Media Management
   - Add root folder
+    - /data/media/shows (sonarr)
+    - /data/media/movies (radarr)
 
 - Profiles
-  - Add everything to Any except: BlueRays, top Raw-HD for movies, BR-DISK for movies (leave just remuxes)
-    - Remove all other profiles
-  - Upgrades allowed, until Bluray2160p Remux
-  - Copy to BadTv quality, disable all 4k and Bluray-1080p Remux, upgrade till Web 1080p
-    - If needed
-  - Edit Delay profile: prefer Torrent
-  - (todo: consider setting up release profiles)
+  - Delete any existing profiles except for "Any"
+  - In "Any":
+    - Add all possible qualities
+    - Check "Upgrades Allowed" till the highest quality (Bluray-2160p Remux)
+  - Edit Delay profile: prefer Torrent, instead of Usenet
 
 - Indexers: just verify them after setting up Prowlarr later
 
 - Download clients
-  - Add qBitTorrent: localhost:8080
-  - (todo: consider sequential order & first and last first, for now unchecked for speed)
-
-- Import Lists, Connect, Metadata - (todo) consider adding trakt.tv, discord/telegram/pushover/pushbullet, jellyfin, some metadata
+  - Add qBitTorrent: localhost:8080 (leave default)
 
 - General: grab API key for future
 
@@ -87,72 +88,70 @@ Just run `./update.sh`.
 
 ### Set up indexers - Prowlarr
 
-- Authentication method: basic (admin, qwerty)
+- Authentication method: basic/forms (admin, qwerty)
 - Authentication required: Disable for localhost
 
-- Indexer proxy: flaresolverr, tags - flaresolverr
-- Applications: Radarr, Sonarr
-- (todo: consider telegram/pushbullet)
+- Indexer proxy (settings -> indexers): flaresolverr, tags - flaresolverr, default settings (localhost:8191)
+- Apps: Radarr, Sonarr (add them using localhost address and API keys)
 - UI: dark theme
-- Indexers (all default 25 priority, rutracker 20)
-  - 1337.x, add flaresolverr tag
-  - therarbg
-  - kinozal.tv
-  - rutracker.org (20 priority)
-  - the pirate bay
+- Indexers
+  - 1337x
+  - Kinozal (use your account)
+  - RuTracker.org (use your account)
+  - rutracker-v2 (custom, use your account)
+  - TheRARBG (custom yml)
 
 - Click Sync App Indexers, recheck them in Sonarr & Radarr
 
-> Copy prowlarr.yml to /config/Prowlarr/Definitions/Custom, and add rutracker(movie) instead of rutracker
-
 ### Set up Jellyfin
 
-- Create MY account
+- Create MY account (ewancoder)
+- Create family account (family/qwerty) - access to all libraries
 - Library:
-  - Movies: /data/movies + /data/downloads/manual-movies
-  - Shows: /data/tvshows + /data/downloads/manual-shows
-  - Home Vid/Photos: /data/downloads/custom-media
-- Preferred language: english
-- Country: USA
-- Auto refresh metadata: 30 days
-- Metadata savers: Nfo
-- Save artwork (5 backdrops)
-- (for now leave OFF) - trickplay and chapter images
-  - They load the CPU and need video files processing, so leave them off for now, see how it goes
-- Automerge series from different folders
-- English/United States
-- Leave checked allow remote connections (cause I'm not sure it hinders localhost)
+  - Movies: /data/media/movies
+  - Shows: /data/media/tvshows
+  - Home Vid/Photos: /data/downloads/content
+- Leave checked allow remote connections
 
-- Go to dashboard - branding - login disclaimer :)
-  - .loginDisclaimer { font-size: 5rem; color: #F55; }
+For libraries:
+  - Preferred language: English
+  - Country: US
+  - Automatically add to collection (movies)
+  - Automatically merge series that are spread across multiple folders (series)
+  - Automitacally refresh metadata from internet - 30 days
+  - Check metadata savers - Nfo
+  - Fetcher settings
+    - Maximum number of backdrops per item - 4
+    - Minimum backdrop width - 1200
+  - Check Save artwork into media folders
+
+- Dashboard - Branding - Login disclaimer - adjust text
+  - Styles: .loginDisclaimer { font-size: 5rem; color: #F55; }
+
 - Dashboard - Plugins Catalog - Trakt - install, restart, setup
-  - Disable everything but scrobbling (and also leave sync FROM trakt TO jellyfin ON)
-    - Latest: just Scrobble, that's all (and first 3 skips, and last don't remove item from trakttv)
+  - Uncheck everything except:
+    - Scrobbling
+    - First 3 skips
+    - Last one (don't remove items from trakttv)
   - Sign in
 
-- Playback - Transcoding - NVENC + Enable for everything
-
-- TODO: WIP - set up Jellyfin user / dashboard / other users
+- Playback - Transcoding - NVENC + Enable for everything (all formats)
+- User settings - do not allow transcoding for ewancoder (force direct play)
 
 - Scan all libraries, check that content is present.
-- Add family user with access to all libraries
-- Set up users (per user)
-  - playback preferred audio/subtitle language, do not play default track always, always play subtitles
+- Log in as each user, and set up for user:
+  - Playback preferred audio/subtitle language - English
+  - Do NOT play default track always
+  - Always turn on subtitles
 
-### Set up Jellyseerr
+### Set up Seerr
 
-- Connect to Jellyfin / Sonarr / Radarr
+- Connect to Jellyfin / Sonarr / Radarr (localhost, API)
 - Enable Scan too, check Default server
 - Any (best) quality by default
-- Import users from Jellyfin (maybe no need?)
-- Request some TV Show and a Movie to see that everything works
-- TODO: WIP: Set up
+- Import jellyfin users
 
 ### Set up Kavita
 
 - Sign up / Sign in
-- TODO: WIP: Set up
-
-### Additional Jellyfin setup (users / preferences)
-
-- Add needed users with default settings, access to ALL libraries
+- TODO: WIP
