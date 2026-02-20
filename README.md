@@ -156,7 +156,15 @@ For libraries:
 ### Set up Kavita
 
 - Sign up / Sign in
-- TODO: WIP
+- Enable folder watching (server-general)
+- Add library: /data/media/comics (server-libraries)
+  - All 4 file types
+  - Check manage collections (try this) and manage reading lists (try this too)
+  - Default language: English
+- In reader:
+  - Layout mode: double
+  - Emulate comic book
+  - Save to default profile
 
 ### Set up Kapowarr
 

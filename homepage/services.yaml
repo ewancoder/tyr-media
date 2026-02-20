@@ -52,6 +52,11 @@
         href: http://odin.local:9696
         description: Prowlarr
 
+    - Comics setup:
+        icon: kapowarr.png
+        href: http://odin.local:5656
+        description: Kapowarr
+
 - Pet projects:
     - Seq logs:
         icon: seq.png
