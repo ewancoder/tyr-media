@@ -158,6 +158,18 @@ For libraries:
 - Sign up / Sign in
 - TODO: WIP
 
+### Set up Kapowarr
+
+- Add root folder: /data/media/comics
+- Set direct download temporary folder to: /data/downloads
+- Concurrent direct downloads: 10
+- Failing torrent timeout: 30
+- Add torrent client: qbittorrent, localhost:8080
+- (skip) cannot login to Mega due to MFA, unfortunately, but prefer logging in if you can
+- Log in to ComicVine using Google SSO, get API key, add it to General settings (required for Kapowarr)
+- Set up flaresolverr base url (http://localhost:8191)
+- Dark theme
+
 ### Set up Jellystat
 
 Sign up / connect to Jellyfin.
