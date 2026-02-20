@@ -26,6 +26,11 @@
         href: https://app.trakt.tv
         description: app.trakt.tv
 
+    - Statistics:
+        icon: jellystat.png
+        href: http://odin.local:3000
+        description: Jellystat
+
 - Management:
     - Torrents:
         icon: qbittorrent.png
