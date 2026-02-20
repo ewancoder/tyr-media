@@ -27,6 +27,8 @@ Just run `./update.sh`.
 
 > Go to Homepage, you can click on everything on there so you don't need to remember specific ports.
 
+> You can try using AI-written `configure.sh` script to do everything automatically, however it's still untested and might be unreliable.
+
 ### Set up qBitTorrent
 
 > If you run it on a custom port (non-8080) you need to disable header host validation in the config file, otherwise it will just throw Unauthorized and won't show the sign in UI.
