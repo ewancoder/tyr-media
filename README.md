@@ -126,6 +126,8 @@ For libraries:
     - Maximum number of backdrops per item - 4
     - Minimum backdrop width - 1200
   - Check Save artwork into media folders
+  - Enable trickplay (all 3 checkboxes), but not chapters (they are resource intensive I guess)
+    - (if enabled when already having media) Run task: Generate Trickplay Images
 
 - Dashboard - Branding - Login disclaimer - adjust text
   - Styles: .loginDisclaimer { font-size: 5rem; color: #F55; }
@@ -136,6 +138,15 @@ For libraries:
     - First 3 skips
     - Last one (don't remove items from trakttv)
   - Sign in
+
+Other Plugins (manual installation)
+  - Intro skipper (add repo: https://intro-skipper.org/manifest.json, update ctrl+f5)
+    - Click on Inject CSS (skip button)
+    - Scan all libraries
+    - Run task: Detect and Analyze Media Segments
+  - File Transformation plugin - necessary for other plugins, for tv clients etc
+  - Jellyfin-Enhanced - many cool things
+    - Enter TMDB api key
 
 - Playback - Transcoding - NVENC + Enable for everything (all formats)
 - User settings - do not allow transcoding for ewancoder (force direct play)
@@ -158,8 +169,9 @@ For libraries:
 - Sign up / Sign in
 - Enable folder watching (server-general)
 - Add library: /data/media/comics (server-libraries)
+  - Type - Comics (flexible), not just Comics (this will fuck different comics up into a single comics)
   - All 4 file types
-  - Check manage collections (try this) and manage reading lists (try this too)
+  - Check manage collections / manage reading lists (try them)
   - Default language: English
 - In reader:
   - Layout mode: double
