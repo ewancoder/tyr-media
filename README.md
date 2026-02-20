@@ -75,7 +75,7 @@ Just run `./update.sh`.
 - Profiles
   - Delete any existing profiles except for "Any"
   - In "Any":
-    - Add all possible qualities
+    - Add all possible qualities, EXCEPT BlueRays (only BlueRay Remux should be enabled)
     - Check "Upgrades Allowed" till the highest quality (Bluray-2160p Remux)
   - Edit Delay profile: prefer Torrent, instead of Usenet
 
