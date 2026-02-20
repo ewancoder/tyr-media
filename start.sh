@@ -71,4 +71,4 @@ fi
 
 docker compose --env-file .env --env-file .secrets -f compose.yml up -d
 
-cp indexers/* ${PROWLARR_CONFIG}/Definitions/
+cp indexers/* ${PROWLARR_FOLDER}/Definitions/
