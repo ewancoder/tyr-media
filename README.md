@@ -95,7 +95,7 @@ Just run `./update.sh`.
 - Apps: Radarr, Sonarr (add them using localhost address and API keys)
 - UI: dark theme
 - Indexers
-  - 1337x
+  - 1337x (add 'flaresolverr' tag)
   - Kinozal (use your account)
   - RuTracker.org (use your account)
   - rutracker-v2 (custom, use your account)
@@ -155,3 +155,7 @@ For libraries:
 
 - Sign up / Sign in
 - TODO: WIP
+
+### Set up Jellystat
+
+Sign up / connect to Jellyfin.
