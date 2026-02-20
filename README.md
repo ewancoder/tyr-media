@@ -126,8 +126,9 @@ For libraries:
     - Maximum number of backdrops per item - 4
     - Minimum backdrop width - 1200
   - Check Save artwork into media folders
-  - Enable trickplay (all 3 checkboxes), but not chapters (they are resource intensive I guess)
+  - Do NOT enable trickplay (all 3 checkboxes), nor chapters
     - (if enabled when already having media) Run task: Generate Trickplay Images
+    - if enabled - uses a TON of CPU/GPU and physical TIME, just not worth it
 
 - Dashboard - Branding - Login disclaimer - adjust text
   - Styles: .loginDisclaimer { font-size: 5rem; color: #F55; }
