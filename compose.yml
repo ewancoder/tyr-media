@@ -1,13 +1,13 @@
-name: tyr-media
+name: test-media
 
 networks:
-  tyr-media-net:
-    name: tyr-media-net
+  test-media-net:
+    name: test-media-net
 
 services:
-  tyr-media-gluetun:
+  test-media-gluetun:
     image: qmcgaw/gluetun
-    container_name: tyr-media-gluetun
+    container_name: test-media-gluetun
     cap_add:
       - NET_ADMIN
     devices:
@@ -32,7 +32,7 @@ services:
       - VPN_PORT_FORWARDING_UP_COMMAND=/bin/sh -c 'wget -O- --retry-connrefused --post-data "json={\"listen_port\":{{PORTS}}}" http://127.0.0.1:8080/api/v2/app/setPreferences 2>&1'
     restart: unless-stopped
     networks:
-      - tyr-media-net
+      - test-media-net
     ports:
       - ${PROWLARR_PORT}:9696
       - ${SONARR_PORT}:8989
@@ -42,17 +42,14 @@ services:
       - ${JELLYFIN_PORT}:8096
       - ${KAPOWARR_PORT}:5656
       - ${JELLYSTAT_PORT}:3000
-      - 8920:8920 # Jellyfin optional
-      - 7359:7359/udp # Jellyfin optional
-      - 1900:1900/udp # Jellyfin optional
       - ${KAVITA_PORT}:5000
       - ${HTTP_PROXY_PORT}:8888/tcp # HTTP proxy
     healthcheck:
       test: ["CMD-SHELL", "wget --spider http://localhost:8888 2>&1 | grep -q '400 Bad Request' || exit 1"]
 
-  tyr-media-prowlarr:
+  test-media-prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
-    container_name: tyr-media-prowlarr
+    container_name: test-media-prowlarr
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -60,26 +57,26 @@ services:
     volumes:
       - ${PROWLARR_FOLDER}:/config
     restart: unless-stopped
-    network_mode: service:tyr-media-gluetun
+    network_mode: service:test-media-gluetun
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:9696 || exit 1"]
 
-  tyr-media-flaresolverr:
+  test-media-flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
-    container_name: tyr-media-flaresolverr
+    container_name: test-media-flaresolverr
     environment:
       - LOG_LEVEL=${LOG_LEVEL:-info}
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
       - TZ=${TIMEZONE}
     restart: unless-stopped
-    network_mode: service:tyr-media-gluetun
+    network_mode: service:test-media-gluetun
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:8191 || exit 1"]
 
-  tyr-media-sonarr:
+  test-media-sonarr:
     image: lscr.io/linuxserver/sonarr:latest
-    container_name: tyr-media-sonarr
+    container_name: test-media-sonarr
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -88,13 +85,13 @@ services:
       - ${SONARR_FOLDER}:/config
       - ${DATA_FOLDER}:/data
     restart: unless-stopped
-    network_mode: service:tyr-media-gluetun
+    network_mode: service:test-media-gluetun
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:8989 || exit 1"]
 
-  tyr-media-radarr:
+  test-media-radarr:
     image: lscr.io/linuxserver/radarr:latest
-    container_name: tyr-media-radarr
+    container_name: test-media-radarr
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -103,13 +100,13 @@ services:
       - ${RADARR_FOLDER}:/config
       - ${DATA_FOLDER}:/data
     restart: unless-stopped
-    network_mode: service:tyr-media-gluetun
+    network_mode: service:test-media-gluetun
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:7878 || exit 1"]
 
-  tyr-media-qbittorrent:
+  test-media-qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
-    container_name: tyr-media-qbittorrent
+    container_name: test-media-qbittorrent
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -118,27 +115,27 @@ services:
       - ${QBITTORRENT_FOLDER}:/config
       - ${DATA_FOLDER}:/data
     restart: unless-stopped
-    network_mode: service:tyr-media-gluetun
+    network_mode: service:test-media-gluetun
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:8080 || exit 1"]
 
-  tyr-media-seerr:
+  test-media-seerr:
     image: ghcr.io/seerr-team/seerr:latest
     init: true
-    container_name: tyr-media-seerr
+    container_name: test-media-seerr
     environment:
       - LOG_LEVEL=debug
       - TZ=${TIMEZONE}
     volumes:
       - ${SEERR_FOLDER}:/app/config
     restart: unless-stopped
-    network_mode: service:tyr-media-gluetun
+    network_mode: service:test-media-gluetun
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
 
-  tyr-media-jellyfin:
+  test-media-jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
-    container_name: tyr-media-jellyfin
+    container_name: test-media-jellyfin
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -148,7 +145,7 @@ services:
       - ${JELLYFIN_FOLDER}:/config
       - ${DATA_FOLDER}:/data
     restart: unless-stopped
-    network_mode: service:tyr-media-gluetun
+    network_mode: service:test-media-gluetun
     deploy:
       resources:
         reservations:
@@ -159,9 +156,9 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:8096 || exit 1"]
 
-  tyr-media-kavita:
+  test-media-kavita:
     image: lscr.io/linuxserver/kavita:latest
-    container_name: tyr-media-kavita
+    container_name: test-media-kavita
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -170,19 +167,19 @@ services:
       - ${KAVITA_FOLDER}:/config
       - ${DATA_FOLDER}:/data
     restart: unless-stopped
-    network_mode: service:tyr-media-gluetun
+    network_mode: service:test-media-gluetun
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:5000 || exit 1"]
 
-  tyr-media-homepage:
+  test-media-homepage:
     image: ghcr.io/gethomepage/homepage:latest
-    container_name: tyr-media-homepage
+    container_name: test-media-homepage
     environment:
       HOMEPAGE_ALLOWED_HOSTS: ${HOSTNAME}
       PUID: ${USER_ID}
       PGID: ${GROUP_ID}
     ports:
-      - 80:3000
+      - 81:3000
     volumes:
       - ${HOMEPAGE_FOLDER}:/app/config
       - type: bind
@@ -193,25 +190,25 @@ services:
         target: /app/config/services.yaml
     restart: unless-stopped
     networks:
-      - tyr-media-net
+      - test-media-net
     healthcheck:
       test: ["CMD-SHELL", "wget --spider http://127.0.0.1:3000 || exit 1"]
 
-  tyr-media-jellystat-db:
+  test-media-jellystat-db:
     image: 'postgres:15.2'
     shm_size: 1gb
-    container_name: tyr-media-jellystat-db
+    container_name: test-media-jellystat-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
       - ${JELLYSTAT_FOLDER}/pg:/var/lib/postgresql/data
-    network_mode: service:tyr-media-gluetun
+    network_mode: service:test-media-gluetun
 
-  tyr-media-jellystat:
+  test-media-jellystat:
     image: 'cyfershepard/jellystat:latest'
-    container_name: tyr-media-jellystat
+    container_name: test-media-jellystat
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -222,12 +219,12 @@ services:
       TZ: ${TIMEZONE}
     volumes:
       - ${JELLYSTAT_FOLDER}/config:/app/config
-    network_mode: service:tyr-media-gluetun
+    network_mode: service:test-media-gluetun
     depends_on:
-      - tyr-media-jellystat-db
+      - test-media-jellystat-db
 
-  tyr-media-kapowarr:
-    container_name: tyr-media-kapowarr
+  test-media-kapowarr:
+    container_name: test-media-kapowarr
     image: mrcas/kapowarr:latest
     network_mode: service:tyr-media-gluetun
     restart: unless-stopped
