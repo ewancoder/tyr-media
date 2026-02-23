@@ -87,6 +87,7 @@ services:
     volumes:
       - ${SONARR_FOLDER}:/config
       - ${DATA_FOLDER}:/data
+      - /mnt/media-extend/tyrm:/data-extend
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
@@ -102,6 +103,7 @@ services:
     volumes:
       - ${RADARR_FOLDER}:/config
       - ${DATA_FOLDER}:/data
+      - /mnt/media-extend/tyrm:/data-extend
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
@@ -117,6 +119,7 @@ services:
     volumes:
       - ${QBITTORRENT_FOLDER}:/config
       - ${DATA_FOLDER}:/data
+      - /mnt/media-extend/tyrm:/data-extend
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
@@ -147,6 +150,7 @@ services:
     volumes:
       - ${JELLYFIN_FOLDER}:/config
       - ${DATA_FOLDER}:/data
+      - /mnt/media-extend/tyrm:/data-extend
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     deploy:
@@ -169,6 +173,7 @@ services:
     volumes:
       - ${KAVITA_FOLDER}:/config
       - ${DATA_FOLDER}:/data
+      - /mnt/media-extend/tyrm:/data-extend
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
