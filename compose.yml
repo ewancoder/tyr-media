@@ -200,7 +200,7 @@ services:
   tyr-media-jellystat-db:
     image: 'postgres:15.2'
     shm_size: 1gb
-    container_name: jellystat-db
+    container_name: tyr-media-jellystat-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -211,7 +211,7 @@ services:
 
   tyr-media-jellystat:
     image: 'cyfershepard/jellystat:latest'
-    container_name: jellystat
+    container_name: tyr-media-jellystat
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
