@@ -18,7 +18,7 @@ done
 
 mkdir -p $DATA_FOLDER
 mkdir -p $DATA_FOLDER/downloads/content
-mkdir -p $DATA_FOLDER/media/{shows,movies}
+mkdir -p $DATA_FOLDER/media/{shows,movies,comics}
 mkdir -p $CONFIGS_FOLDER
 
 if [ ! -f .secrets ]; then
@@ -43,7 +43,7 @@ if [ ! -f ${VPN_WG_CONFIG} ]; then
     read answer
     if [[ "$answer" == "y" || "$answer" == "Y" || "$answer" == "" ]]; then
         echo "Creating wireguard file (make sure Go is installed before continuing: go version)"
-        read -p "Region: (using nl_amsterdam for netherlands by default, write 'usa' USA)"
+        read -p "Region: (default is nl_amsterdam, write 'usa' for USA): " region
         go install github.com/Ephemeral-Dust/pia-wg-config@latest
         if [[ "$region" == "" ]]; then
             region="nl_amsterdam"

@@ -219,7 +219,7 @@ services:
       POSTGRES_IP: localhost
       POSTGRES_PORT: 5432
       JWT_SECRET: my-secret-jwt-key
-      TZ: mytimezone
+      TZ: ${TIMEZONE}
     volumes:
       - ${JELLYSTAT_FOLDER}/config:/app/config
     network_mode: service:tyr-media-gluetun
@@ -230,6 +230,7 @@ services:
     container_name: tyr-media-kapowarr
     image: mrcas/kapowarr:latest
     network_mode: service:tyr-media-gluetun
+    restart: unless-stopped
     volumes:
       - ${KAPOWARR_FOLDER}:/app/db
       - ${DATA_FOLDER}:/data

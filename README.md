@@ -111,7 +111,7 @@ Just run `./update.sh`.
 - Create family account (family/qwerty) - access to all libraries
 - Library:
   - Movies: /data/media/movies
-  - Shows: /data/media/tvshows
+  - Shows: /data/media/shows
   - Home Vid/Photos: /data/downloads/content
 - Leave checked allow remote connections
 
@@ -120,7 +120,7 @@ For libraries:
   - Country: US
   - Automatically add to collection (movies)
   - Automatically merge series that are spread across multiple folders (series)
-  - Automitacally refresh metadata from internet - 30 days
+  - Automatically refresh metadata from internet - 30 days
   - Check metadata savers - Nfo
   - Fetcher settings
     - Maximum number of backdrops per item - 4
