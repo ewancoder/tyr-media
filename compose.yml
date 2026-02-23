@@ -226,7 +226,7 @@ services:
     depends_on:
       - tyr-media-jellystat-db
 
-  kapowarr:
+  tyr-media-kapowarr:
     container_name: tyr-media-kapowarr
     image: mrcas/kapowarr:latest
     network_mode: service:tyr-media-gluetun
