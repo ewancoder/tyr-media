@@ -69,6 +69,11 @@ if [ -f ${VPN_WG_CONFIG} ]; then
     set +a
 fi
 
+# Make this directory with user permissions before we start everything.
+mkdir -p ${SEERR_FOLDER}
+
 docker compose --env-file .env --env-file .secrets -f compose.yml up -d
 
-cp indexers/* ${PROWLARR_FOLDER}/Definitions/
+sleep 5
+mkdir -p ${PROWLARR_FOLDER}/Definitions/Custom
+cp indexers/* ${PROWLARR_FOLDER}/Definitions/Custom

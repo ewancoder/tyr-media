@@ -165,20 +165,6 @@ Other Plugins (manual installation)
 - Any (best) quality by default
 - Import jellyfin users
 
-### Set up Kavita
-
-- Sign up / Sign in
-- Enable folder watching (server-general)
-- Add library: /data/media/comics (server-libraries)
-  - Type - Comics (flexible), not just Comics (this will fuck different comics up into a single comics)
-  - All 4 file types
-  - Check manage collections / manage reading lists (try them)
-  - Default language: English
-- In reader:
-  - Layout mode: double
-  - Emulate comic book
-  - Save to default profile
-
 ### Set up Kapowarr
 
 - Add root folder: /data/media/comics
@@ -190,6 +176,21 @@ Other Plugins (manual installation)
 - Log in to ComicVine using Google SSO, get API key, add it to General settings (required for Kapowarr)
 - Set up flaresolverr base url (http://localhost:8191)
 - Dark theme
+
+### Set up Kavita
+
+- Sign up / Sign in
+- Enable folder watching (server-general)
+- Add library: /data/media/comics (server-libraries)
+  - Type - Comics (flexible), not just Comics (this will fuck different comics up into a single comics)
+  - All 4 file types
+  - Check manage collections / manage reading lists (try them)
+  - Enable Metadata
+  - Default language: English
+- In reader:
+  - Layout mode: double
+  - Emulate comic book
+  - Save to default profile
 
 ### Set up Jellystat
 
