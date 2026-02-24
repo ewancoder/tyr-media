@@ -115,6 +115,8 @@ Just run `./update.sh`.
   - Home Vid/Photos: /data/downloads/content
 - Leave checked allow remote connections
 
+General - Cache path: /data/jellyfin-cache
+
 For libraries:
   - Preferred language: English
   - Country: US

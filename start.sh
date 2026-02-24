@@ -19,6 +19,7 @@ done
 mkdir -p $DATA_FOLDER
 mkdir -p $DATA_FOLDER/downloads/content
 mkdir -p $DATA_FOLDER/media/{shows,movies,comics}
+mkdir -p $DATA_FOLDER/jellyfin-cache
 mkdir -p $CONFIGS_FOLDER
 
 if [ ! -f .secrets ]; then
