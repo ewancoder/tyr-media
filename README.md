@@ -116,6 +116,7 @@ Just run `./update.sh`.
 - Leave checked allow remote connections
 
 General - Cache path: /data/jellyfin-cache
+- Make sure it lives on the SSD
 
 For libraries:
   - Preferred language: English
@@ -128,6 +129,7 @@ For libraries:
     - Maximum number of backdrops per item - 4
     - Minimum backdrop width - 1200
   - Check Save artwork into media folders
+    - DO NOT check this for HDD system - save it to ssd, same with metadata
   - Do NOT enable trickplay (all 3 checkboxes), nor chapters
     - (if enabled when already having media) Run task: Generate Trickplay Images
     - if enabled - uses a TON of CPU/GPU and physical TIME, just not worth it
