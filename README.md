@@ -88,6 +88,18 @@ Just run `./update.sh`.
 
 - UI: dark theme
 
+### Set up Bazarr (not done by configure.sh script yet)
+
+Enable: sonarr, radarr
+- Providers: add (opensubtitles+enterpassword/addic7ed,podnapisi)
+- Languages:
+  - Add english language filter (probably not needed)
+  - Click Add Equal, English = English (default) (probably not needed)
+  - Add new profile, Name English, add language english
+  - Cutoff: en, save
+  - Default profiles for series/movies: english
+  - Bulk edit existing: select language
+
 ### Set up indexers - Prowlarr
 
 - Authentication method: basic/forms (admin, qwerty)

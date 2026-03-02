@@ -47,6 +47,11 @@
         href: http://odin.local:7878
         description: Radarr
 
+    - Subtitles Downloader:
+        icon: bazarr.png
+        href: http://odin.local:6767
+        description: Bazarr
+
     - Indexers setup:
         icon: prowlarr.png
         href: http://odin.local:9696

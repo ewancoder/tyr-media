@@ -37,6 +37,7 @@ services:
       - ${PROWLARR_PORT}:9696
       - ${SONARR_PORT}:8989
       - ${RADARR_PORT}:7878
+      - ${BAZARR_PORT}:6767
       - ${QBITTORRENT_WEBUI_PORT}:8080
       - ${SEERR_PORT}:5055
       - ${JELLYFIN_PORT}:8096
@@ -106,6 +107,21 @@ services:
     network_mode: service:tyr-media-gluetun
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:7878 || exit 1"]
+
+  tyr-media-bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: tyr-media-bazarr
+    environment:
+      - PUID=${USER_ID}
+      - PGID=${GROUP_ID}
+      - TZ=${TIMEZONE}
+    volumes:
+      - ${BAZARR_FOLDER}:/config
+      - ${DATA_FOLDER}:/data
+    restart: unless-stopped
+    network_mode: service:tyr-media-gluetun
+    healthcheck:
+      test: ["CMD-SHELL", "curl http://localhost:6767 || exit 1"]
 
   tyr-media-qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
