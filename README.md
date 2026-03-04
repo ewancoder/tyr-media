@@ -91,13 +91,11 @@ Just run `./update.sh`.
 ### Set up Bazarr (not done by configure.sh script yet)
 
 Enable: sonarr, radarr
-- Providers: add (opensubtitles+enterpassword/addic7ed,podnapisi)
+- Providers: add (opensubtitles+enterpassword)
 - Languages:
-  - Add english language filter (probably not needed)
-  - Click Add Equal, English = English (default) (probably not needed)
-  - Add new profile, Name English, add language english
-  - Cutoff: en, save
-  - Default profiles for series/movies: english
+  - Languages filter: English
+  - Add New Profile
+    - English, English, Cutoff en, Default for series/movies: English, save
   - Bulk edit existing: select language
 
 ### Set up indexers - Prowlarr
@@ -111,8 +109,9 @@ Enable: sonarr, radarr
 - Indexers
   - 1337x (add 'flaresolverr' tag)
   - Kinozal (use your account)
+    - Uncheck add RUSSIAN to titles
   - RuTracker.org (use your account)
-  - rutracker-v2 (custom, use your account)
+  - rutracker-v2 (movies) (custom, use your account)
   - TheRARBG (custom yml)
 
 - Click Sync App Indexers, recheck them in Sonarr & Radarr
@@ -128,15 +127,16 @@ Enable: sonarr, radarr
 - Leave checked allow remote connections
 
 General - Cache path: /data/jellyfin-cache
-- Make sure it lives on the SSD
+- Make sure it lives on the SSD though (for server, do not change it at all)
 
 For libraries:
   - Preferred language: English
   - Country: US
+  - Subtitles: Allow Text (do not allow images, they are not scalable)
   - Automatically add to collection (movies)
   - Automatically merge series that are spread across multiple folders (series)
   - Automatically refresh metadata from internet - 30 days
-  - Check metadata savers - Nfo
+  - Do NOT Check metadata savers - Nfo - this thing just saves it next to files
   - Fetcher settings
     - Maximum number of backdrops per item - 4
     - Minimum backdrop width - 1200
@@ -154,25 +154,28 @@ For libraries:
     - Scrobbling
     - First 3 skips
     - Last one (don't remove items from trakttv)
-  - Sign in
+  - Sign in (only for ewancoder)
 
 Other Plugins (manual installation)
-  - Intro skipper (add repo: https://intro-skipper.org/manifest.json, update ctrl+f5)
-    - Click on Inject CSS (skip button)
-    - Scan all libraries
-    - Run task: Detect and Analyze Media Segments
-  - File Transformation plugin - necessary for other plugins, for tv clients etc
-  - Jellyfin-Enhanced - many cool things
-    - Enter TMDB api key
+  - FOR NOW - skip everything, but later consider:
+      - Intro skipper (add repo: https://intro-skipper.org/manifest.json, update ctrl+f5)
+        - Click on Inject CSS (skip button)
+        - Scan all libraries
+        - Run task: Detect and Analyze Media Segments
+      - File Transformation plugin - necessary for other plugins, for tv clients etc
+      - Jellyfin-Enhanced - many cool things
+        - Enter TMDB api key
 
 - Playback - Transcoding - NVENC + Enable for everything (all formats)
 - User settings - do not allow transcoding for ewancoder (force direct play)
+  - Skip this, I want to watch a movie that doesn't play direct lol
 
 - Scan all libraries, check that content is present.
 - Log in as each user, and set up for user:
   - Playback preferred audio/subtitle language - English
   - Do NOT play default track always
   - Always turn on subtitles
+  - Subtitle text size: smaller, color: grey
 
 ### Set up Seerr
 
@@ -210,4 +213,5 @@ Other Plugins (manual installation)
 
 ### Set up Jellystat
 
-Sign up / connect to Jellyfin.
+- Sign up / connect to Jellyfin using localhost/apikey (create new key).
+- Set up external url for jellyfin
