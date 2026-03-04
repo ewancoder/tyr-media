@@ -46,7 +46,7 @@ Just run `./update.sh`.
   - Show external IP in status bar
 
 - Downloads
-  - Excluded file names: `*.lnk`
+  - Excluded file names: `*.lnk`, `*.m2ts`, `BDMV/*`
 
 - Connection
   - Uncheck all 4 connections limits (global, per torrent, global upload, upload per torrent)
