@@ -3,17 +3,17 @@
 - Media:
     - Request something:
         icon: seerr.png
-        href: http://odin.local:5055
+        href: http://asgard.local:5055
         description: Seerr
 
     - Watch something:
         icon: jellyfin.png
-        href: http://odin.local:8096
+        href: http://asgard.local:8096
         description: Jellyfin
 
     - Read something:
         icon: kavita.png
-        href: http://odin.local:10888
+        href: http://asgard.local:10888
         description: Kavita
 
     - Track it:
@@ -28,38 +28,38 @@
 
     - Statistics:
         icon: jellystat.png
-        href: http://odin.local:3000
+        href: http://asgard.local:3000
         description: Jellystat
 
 - Management:
     - Torrents:
         icon: qbittorrent.png
-        href: http://odin.local:8080
+        href: http://asgard.local:8080
         description: qBitTorrent
 
     - TV Shows Tracker:
         icon: sonarr.png
-        href: http://odin.local:8989
+        href: http://asgard.local:8989
         description: Sonarr
 
     - Movies Tracker:
         icon: radarr.png
-        href: http://odin.local:7878
+        href: http://asgard.local:7878
         description: Radarr
 
     - Subtitles Downloader:
         icon: bazarr.png
-        href: http://odin.local:6767
+        href: http://asgard.local:6767
         description: Bazarr
 
     - Indexers setup:
         icon: prowlarr.png
-        href: http://odin.local:9696
+        href: http://asgard.local:9696
         description: Prowlarr
 
     - Comics setup:
         icon: kapowarr.png
-        href: http://odin.local:5656
+        href: http://asgard.local:5656
         description: Kapowarr
 
 - Pet projects:
