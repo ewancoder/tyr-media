@@ -1,0 +1,21 @@
+name: tyr-lab
+
+networks:
+  tyr-lab-net:
+    name: tyr-lab-net
+
+services:
+  tyr-lab-adguard:
+    image: adguard/adguardhome:latest
+    container_name: tyr-lab-adguard
+    restart: unless-stopped
+    ports:
+      - 53:53/tcp
+      - 53:53/udp
+      - 23001:3000/tcp
+      - 23002:80/tcp
+    volumes:
+      - ${ADGUARD_CONFIG}/work:/opt/adguardhome/work
+      - ${ADGUARD_CONFIG}/conf:/opt/adguardhome/conf
+    networks:
+      - tyr-lab-net
