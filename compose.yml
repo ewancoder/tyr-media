@@ -207,6 +207,11 @@ services:
       - type: bind
         source: ./homepage/services.yaml
         target: /app/config/services.yaml
+      - type: bind
+        source: ./homepage/widgets.yaml
+        target: /app/config/widgets.yaml
+      - ${CONFIGS_FOLDER}:/stats/configs
+      - ${DATA_FOLDER}:/stats/data
     restart: unless-stopped
     networks:
       - tyr-media-net
