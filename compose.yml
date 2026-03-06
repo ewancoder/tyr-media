@@ -7,6 +7,8 @@ networks:
 services:
   tyr-media-gluetun:
     image: qmcgaw/gluetun
+    #image: alpine:latest # For no vpn.
+    #command: sleep infinity
     container_name: tyr-media-gluetun
     cap_add:
       - NET_ADMIN
