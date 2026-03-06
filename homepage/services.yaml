@@ -62,6 +62,11 @@
         href: http://asgard.local:5656
         description: Kapowarr
 
+    - Ads blocking:
+        icon: adblock.png
+        href: http://asgard.local:23002
+        description: AdGuard
+
 - Pet projects:
     - Seq logs:
         icon: seq.png
