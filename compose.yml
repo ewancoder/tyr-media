@@ -91,6 +91,7 @@ services:
     volumes:
       - ${SONARR_FOLDER}:/config
       - ${DATA_FOLDER}:/data
+      - ${FAST_DATA_FOLDER}:/fast-data
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
@@ -106,6 +107,7 @@ services:
     volumes:
       - ${RADARR_FOLDER}:/config
       - ${DATA_FOLDER}:/data
+      - ${FAST_DATA_FOLDER}:/fast-data
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
@@ -121,6 +123,7 @@ services:
     volumes:
       - ${BAZARR_FOLDER}:/config
       - ${DATA_FOLDER}:/data
+      - ${FAST_DATA_FOLDER}:/fast-data
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
@@ -136,6 +139,7 @@ services:
     volumes:
       - ${QBITTORRENT_FOLDER}:/config
       - ${DATA_FOLDER}:/data
+      - ${FAST_DATA_FOLDER}:/fast-data
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
@@ -166,6 +170,7 @@ services:
     volumes:
       - ${JELLYFIN_FOLDER}:/config
       - ${DATA_FOLDER}:/data
+      - ${FAST_DATA_FOLDER}:/fast-data
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     deploy:
@@ -188,6 +193,7 @@ services:
     volumes:
       - ${KAVITA_FOLDER}:/config
       - ${DATA_FOLDER}:/data
+      - ${FAST_DATA_FOLDER}:/fast-data
     restart: unless-stopped
     network_mode: service:tyr-media-gluetun
     healthcheck:
@@ -215,6 +221,7 @@ services:
         target: /app/config/widgets.yaml
       - ${CONFIGS_FOLDER}:/stats/configs
       - ${DATA_FOLDER}:/stats/data
+      - ${FAST_DATA_FOLDER}:/fast-data
     restart: unless-stopped
     networks:
       - tyr-media-net
@@ -258,5 +265,6 @@ services:
     volumes:
       - ${KAPOWARR_FOLDER}:/app/db
       - ${DATA_FOLDER}:/data
+      - ${FAST_DATA_FOLDER}:/fast-data
       #- "/path/to/download_folder:/app/temp_downloads"
       #- "/path/to/root_folder:/comics-1"
