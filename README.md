@@ -177,6 +177,13 @@ Other Plugins (manual installation)
   - Always turn on subtitles
   - Subtitle text size: smaller, color: grey
 
+- IMPORTANT PLUGINS
+  - Trakt.tv (listed above)
+  - Moonfin: configure integration with Seerr
+    - Deps: https://www.iamparadox.dev/jellyfin/plugins/manifest.json, file transformations plugin
+    - Restart Jellyfin
+    - Moonfin: https://raw.githubusercontent.com/Moonfin-Client/Plugin/refs/heads/master/manifest.json
+
 ### Set up Seerr
 
 - Connect to Jellyfin / Sonarr / Radarr (localhost, API)
