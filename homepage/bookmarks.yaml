@@ -2,60 +2,62 @@
 
 - Repositories:
     - Personal profile:
-        - icon: github
+        - icon: github.png
           href: https://github.com/ewancoder
           description: My personal GitHub profile
 
     - TYR organization:
-        - icon: github
+        - icon: github.png
           href: https://github.com/ewancoder-tyr
-          description: TyR (TypingRealm) pet projects organization
+          description: TyR (TypingRealm) pet projects
 
     - Dotfiles:
-        - icon: github
+        - icon: github.png
           href: https://github.com/ewancoder/dotfiles
-          description: My latest Arch Linux configuration
+          description: Arch Linux configuration
 
     - Real:
-        - icon: github
+        - icon: github.png
           href: https://github.com/ewancoder/real
-          description: Latest attempt for an Arch Linux script, not universal for now
+          description: Arch Linux install script
 
     - FoulBot:
-        - icon: github
+        - icon: github.png
           href: https://github.com/ewancoder/foulbot
-          description: Current AI bots implementation for Telegram & Discord
+          description: AI bots for Telegram & Discord
 
 - Social:
-    - Personal website / CV:
+    - Personal website:
         - icon: https://ewancoder.github.io/favicon.ico
           href: https://ewancoder.github.io
+          description: Personal website / CV
 
-    - Public GitHub profile:
-        - icon: github.png
-          href: https://github.com/ewancoder
-
-    - LinkedIn profile:
+    - LinkedIn:
         - icon: linkedin.png
           href: https://www.linkedin.com/in/ivan-zyranau
+          description: Professional profile
 
-    - YouTube channel:
+    - YouTube:
         - icon: youtube.png
           href: https://www.youtube.com/channel/UCQzd85vUhiVJ_5TJ0JcvCLw
+          description: YouTube channel
 
     - Discord:
         - icon: discord.png
           href: https://discordapp.com/users/669515089920917504
+          description: Discord profile
 
-    - NitroType profile:
-        - abbr: N
-          icon: https://www.nitrotype.com/favicon.ico
-          href: https://www.nitrotype.com/racer/ivanzyranau
-
-    - My knowledge:
-        - icon: https://coggle.it/favicon.ico
-          href: https://coggle.it/diagram/VMqVMtnNZwUlUfV6/t/development/2110b4221ea85822abdcd28b87075f2140faea3ec6bfa4c1c5cc5618ebc8689e
-
-    - StackOverflow profile:
+    - StackOverflow:
         - icon: https://stackoverflow.com/favicon.ico
           href: https://stackoverflow.com/users/3270191/ivan-zyranau
+          description: StackOverflow profile
+
+    - NitroType:
+        - icon: https://www.nitrotype.com/favicon.ico
+          href: https://www.nitrotype.com/racer/ivanzyranau
+          description: NitroType racing profile
+
+    - Knowledge map:
+        - icon: https://coggle.it/favicon.ico
+          href: https://coggle.it/diagram/VMqVMtnNZwUlUfV6/t/development/2110b4221ea85822abdcd28b87075f2140faea3ec6bfa4c1c5cc5618ebc8689e
+          description: Development knowledge tree

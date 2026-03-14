@@ -1,5 +1,35 @@
 ---
 
+- logo:
+    icon: mdi-shield-sword-outline
+
+- greeting:
+    text_size: xl
+    text: Welcome to Asgard
+
+- datetime:
+    text_size: xl
+    format:
+      timeStyle: short
+      dateStyle: long
+      hourCycle: h23
+
+- search:
+    provider: [google, duckduckgo, brave]
+    focus: true
+    showSearchSuggestions: true
+    target: _blank
+
+- openmeteo:
+    label: Weather
+    latitude: {{HOMEPAGE_VAR_LATITUDE}}
+    longitude: {{HOMEPAGE_VAR_LONGITUDE}}
+    timezone: {{HOMEPAGE_VAR_TIMEZONE}}
+    units: metric
+    cache: 5
+    format:
+      maximumFractionDigits: 1
+
 - resources:
     label: System
     cpu: true
@@ -9,9 +39,25 @@
     tempmax: 80
     network: true
     uptime: true
+    expanded: true
+    refresh: 3000
 
 - resources:
-    label: Drives
+    label: Storage
+    expanded: true
     disk:
-      - /stats/configs
       - /stats/data
+      - /fast-data
+    diskUnits: bytes
+
+- glances:
+    url: http://tyr-media-glances:61208
+    version: 4
+    cpu: true
+    mem: true
+    cputemp: true
+    uptime: true
+    disk:
+      - /
+    diskUnits: bytes
+    label: Glances

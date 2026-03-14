@@ -1,0 +1,46 @@
+---
+
+title: TYR Media
+description: Media Server Dashboard
+
+theme: dark
+color: slate
+
+headerStyle: boxedWidgets
+cardBlur: md
+
+background:
+  image: https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?w=2560
+  blur: sm
+  saturate: 50
+  brightness: 50
+  opacity: 50
+
+statusStyle: dot
+showStats: true
+useEqualHeights: true
+hideVersion: true
+
+quicklaunch:
+  searchDescriptions: true
+  showSearchSuggestions: true
+  hideInternetSearch: false
+  provider: google
+
+layout:
+  Media:
+    style: row
+    columns: 3
+    icon: mdi-movie-open-outline
+  Management:
+    style: row
+    columns: 3
+    icon: mdi-cogs
+  System Monitoring:
+    style: row
+    columns: 4
+    icon: mdi-chart-line-variant
+  Pet projects:
+    style: row
+    columns: 3
+    icon: mdi-code-braces

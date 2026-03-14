@@ -1,0 +1,59 @@
+/* TYR Media - Custom Homepage Styling */
+
+/* Smooth glassmorphism effect on service cards */
+.service {
+  backdrop-filter: blur(12px) saturate(150%);
+  -webkit-backdrop-filter: blur(12px) saturate(150%);
+  transition: all 0.3s ease;
+}
+
+.service:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+/* Widget cards glass effect */
+.information-widget-resource,
+.information-widget-glances {
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+}
+
+/* Smooth scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.5);
+}
+
+/* Subtle glow on status dots */
+.status-dot {
+  box-shadow: 0 0 6px currentColor;
+}
+
+/* Bookmark link hover effect */
+.bookmark-icon {
+  transition: transform 0.2s ease;
+}
+
+.bookmark-icon:hover {
+  transform: scale(1.1);
+}
+
+/* Section headers styling */
+.service-group-name {
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}

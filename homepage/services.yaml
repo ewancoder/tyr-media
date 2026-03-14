@@ -2,103 +2,275 @@
 
 - Media:
     - Request something:
-        icon: seerr.png
+        icon: overseerr.png
         href: http://asgard.local:5055
-        description: Seerr
+        description: Seerr - Request movies & TV shows
+        server: tyr-docker
+        container: tyr-media-seerr
+        widget:
+          type: overseerr
+          url: http://tyr-media-gluetun:5055
+          key: {{HOMEPAGE_VAR_SEERR_API_KEY}}
 
     - Watch something:
         icon: jellyfin.png
         href: http://asgard.local:8096
-        description: Jellyfin
+        description: Jellyfin - Stream your media
+        server: tyr-docker
+        container: tyr-media-jellyfin
+        widget:
+          type: jellyfin
+          url: http://tyr-media-gluetun:8096
+          key: {{HOMEPAGE_VAR_JELLYFIN_API_KEY}}
+          enableBlocks: true
+          enableNowPlaying: true
 
     - Read something:
         icon: kavita.png
         href: http://asgard.local:10888
-        description: Kavita
+        description: Kavita - Digital library
+        server: tyr-docker
+        container: tyr-media-kavita
+        widget:
+          type: kavita
+          url: http://tyr-media-gluetun:5000
+          username: {{HOMEPAGE_VAR_KAVITA_USERNAME}}
+          password: {{HOMEPAGE_VAR_KAVITA_PASSWORD}}
+
+    - Statistics:
+        icon: jellystat.png
+        href: http://asgard.local:3000
+        description: Jellystat - Viewing statistics
+        server: tyr-docker
+        container: tyr-media-jellystat
+        widget:
+          type: jellystat
+          url: http://tyr-media-gluetun:3000
+          key: {{HOMEPAGE_VAR_JELLYSTAT_API_KEY}}
 
     - Track it:
         icon: trakt.png
         href: https://trakt.tv
         description: trakt.tv
+        siteMonitor: https://trakt.tv
 
     - Trakt app:
         icon: trakt.png
         href: https://app.trakt.tv
         description: app.trakt.tv
-
-    - Statistics:
-        icon: jellystat.png
-        href: http://asgard.local:3000
-        description: Jellystat
+        siteMonitor: https://app.trakt.tv
 
 - Management:
     - Torrents:
         icon: qbittorrent.png
         href: http://asgard.local:8080
-        description: qBitTorrent
+        description: qBittorrent - Download client
+        server: tyr-docker
+        container: tyr-media-qbittorrent
+        widget:
+          type: qbittorrent
+          url: http://tyr-media-gluetun:8080
+          username: {{HOMEPAGE_VAR_QBITTORRENT_USERNAME}}
+          password: {{HOMEPAGE_VAR_QBITTORRENT_PASSWORD}}
 
-    - TV Shows Tracker:
+    - TV Shows:
         icon: sonarr.png
         href: http://asgard.local:8989
-        description: Sonarr
+        description: Sonarr - TV series manager
+        server: tyr-docker
+        container: tyr-media-sonarr
+        widget:
+          type: sonarr
+          url: http://tyr-media-gluetun:8989
+          key: {{HOMEPAGE_VAR_SONARR_API_KEY}}
+          enableQueue: true
 
-    - Movies Tracker:
+    - Movies:
         icon: radarr.png
         href: http://asgard.local:7878
-        description: Radarr
+        description: Radarr - Movie manager
+        server: tyr-docker
+        container: tyr-media-radarr
+        widget:
+          type: radarr
+          url: http://tyr-media-gluetun:7878
+          key: {{HOMEPAGE_VAR_RADARR_API_KEY}}
+          enableQueue: true
 
-    - Subtitles Downloader:
+    - Subtitles:
         icon: bazarr.png
         href: http://asgard.local:6767
-        description: Bazarr
+        description: Bazarr - Subtitle manager
+        server: tyr-docker
+        container: tyr-media-bazarr
+        widget:
+          type: bazarr
+          url: http://tyr-media-gluetun:6767
+          key: {{HOMEPAGE_VAR_BAZARR_API_KEY}}
 
-    - Indexers setup:
+    - Indexers:
         icon: prowlarr.png
         href: http://asgard.local:9696
-        description: Prowlarr
+        description: Prowlarr - Indexer manager
+        server: tyr-docker
+        container: tyr-media-prowlarr
+        widget:
+          type: prowlarr
+          url: http://tyr-media-gluetun:9696
+          key: {{HOMEPAGE_VAR_PROWLARR_API_KEY}}
 
-    - Comics setup:
+    - Comics:
         icon: kapowarr.png
         href: http://asgard.local:5656
-        description: Kapowarr
+        description: Kapowarr - Comic manager
+        server: tyr-docker
+        container: tyr-media-kapowarr
+
+    - VPN:
+        icon: gluetun.png
+        href: ""
+        description: Gluetun - VPN gateway
+        server: tyr-docker
+        container: tyr-media-gluetun
+
+    - FlareSolverr:
+        icon: cloudflare.png
+        href: ""
+        description: FlareSolverr - Captcha solver
+        server: tyr-docker
+        container: tyr-media-flaresolverr
 
     - Ads blocking:
-        icon: adblock.png
+        icon: adguard-home.png
         href: http://asgard.local:23002
-        description: AdGuard
+        description: AdGuard Home - DNS filtering
+        siteMonitor: http://asgard.local:23002
+
+- System Monitoring:
+    - System Info:
+        icon: glances.png
+        href: http://asgard.local:61208
+        description: Host overview
+        server: tyr-docker
+        container: tyr-media-glances
+        widget:
+          type: glances
+          url: http://tyr-media-glances:61208
+          version: 4
+          metric: info
+
+    - CPU Usage:
+        icon: mdi-chip
+        description: Processor utilization
+        widget:
+          type: glances
+          url: http://tyr-media-glances:61208
+          version: 4
+          metric: cpu
+          chart: true
+          refreshInterval: 3000
+          pointsLimit: 30
+
+    - Memory Usage:
+        icon: mdi-memory
+        description: RAM utilization
+        widget:
+          type: glances
+          url: http://tyr-media-glances:61208
+          version: 4
+          metric: memory
+          chart: true
+          refreshInterval: 3000
+          pointsLimit: 30
+
+    - Top Processes:
+        icon: mdi-format-list-numbered
+        description: CPU-intensive processes
+        widget:
+          type: glances
+          url: http://tyr-media-glances:61208
+          version: 4
+          metric: process
+
+    - GPU:
+        icon: mdi-expansion-card
+        description: AMD GPU usage
+        widget:
+          type: glances
+          url: http://tyr-media-glances:61208
+          version: 4
+          metric: gpu:amd0
+          chart: true
+          refreshInterval: 3000
+
+    - Network:
+        icon: mdi-network
+        description: Network throughput
+        widget:
+          type: glances
+          url: http://tyr-media-glances:61208
+          version: 4
+          metric: network:eth0
+          chart: true
+          refreshInterval: 3000
+
+    - Filesystem:
+        icon: mdi-harddisk
+        description: Root filesystem usage
+        widget:
+          type: glances
+          url: http://tyr-media-glances:61208
+          version: 4
+          metric: fs:/etc/hostname
+
+    - Docker Containers:
+        icon: mdi-docker
+        description: Running containers
+        widget:
+          type: glances
+          url: http://tyr-media-glances:61208
+          version: 4
+          metric: containers
 
 - Pet projects:
     - Seq logs:
         icon: seq.png
         href: https://seq.typingrealm.org
-        description: Logging system for pet projects
+        description: Logging system
+        siteMonitor: https://seq.typingrealm.org
 
     - PgAdmin:
         icon: pgadmin.png
         href: https://pgadmin.typingrealm.org
-        description: PostgreSQL browser for pet projects
+        description: PostgreSQL browser
+        siteMonitor: https://pgadmin.typingrealm.org
 
     - Redis Insights:
         icon: redis.png
         href: https://redisinsight.typingrealm.org
-        description: Redis browser for pet projects
+        description: Redis browser
+        siteMonitor: https://redisinsight.typingrealm.org
 
     - KartMan:
         icon: https://kartman.typingrealm.org/favicon.ico
         href: https://kartman.typingrealm.org
         description: Batumi karting manager
+        siteMonitor: https://kartman.typingrealm.org
 
     - Habits:
         icon: https://habits.typingrealm.com/favicon.ico
         href: https://habits.typingrealm.com
         description: Personal habits tracker
+        siteMonitor: https://habits.typingrealm.com
 
     - Nitrotype Tracker:
         icon: https://tnt.typingrealm.org/favicon.ico
         href: https://tnt.typingrealm.org
-        description: Typing game tracker for KECATS team
+        description: KECATS team tracker
+        siteMonitor: https://tnt.typingrealm.org
 
     - OverLab:
         icon: https://overlab.typingrealm.org/favicon.ico
         href: https://overlab.typingrealm.org
-        description: Bodybuilding progress tracker
+        description: Bodybuilding tracker
+        siteMonitor: https://overlab.typingrealm.org
