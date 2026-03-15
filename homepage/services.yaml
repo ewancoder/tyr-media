@@ -5,100 +5,120 @@
         icon: seerr.png
         href: http://asgard.local:5055
         description: Seerr
+        siteMonitor: http://192.168.1.130:5055
 
     - Watch something:
         icon: jellyfin.png
         href: http://asgard.local:8096
         description: Jellyfin
+        siteMonitor: http://192.168.1.130:8096
 
     - Read something:
         icon: kavita.png
         href: http://asgard.local:10888
         description: Kavita
+        siteMonitor: http://192.168.1.130:10888
 
     - Track it:
         icon: trakt.png
         href: https://trakt.tv
         description: trakt.tv
+        siteMonitor: https://trakt.tv
 
     - Trakt app:
         icon: trakt.png
         href: https://app.trakt.tv
         description: app.trakt.tv
+        siteMonitor: https://app.trakt.tv
 
     - Statistics:
         icon: jellystat.png
         href: http://asgard.local:3000
         description: Jellystat
+        siteMonitor: http://192.168.1.130:3000
 
 - Management:
     - Torrents:
         icon: qbittorrent.png
         href: http://asgard.local:8080
         description: qBitTorrent
+        siteMonitor: http://192.168.1.130:8080
 
     - TV Shows Tracker:
         icon: sonarr.png
         href: http://asgard.local:8989
         description: Sonarr
+        siteMonitor: http://192.168.1.130:8989
 
     - Movies Tracker:
         icon: radarr.png
         href: http://asgard.local:7878
         description: Radarr
+        siteMonitor: http://192.168.1.130:7878
 
     - Subtitles Downloader:
         icon: bazarr.png
         href: http://asgard.local:6767
         description: Bazarr
+        siteMonitor: http://192.168.1.130:6767
 
     - Indexers setup:
         icon: prowlarr.png
         href: http://asgard.local:9696
         description: Prowlarr
+        siteMonitor: http://192.168.1.130:9696
 
     - Comics setup:
         icon: kapowarr.png
         href: http://asgard.local:5656
         description: Kapowarr
+        siteMonitor: http://192.168.1.130:5656
 
     - Ads blocking:
         icon: adblock.png
         href: http://asgard.local:23002
         description: AdGuard
+        siteMonitor: http://192.168.1.130:23002
 
 - Pet projects:
     - Seq logs:
         icon: seq.png
         href: https://seq.typingrealm.org
         description: Logging system for pet projects
+        siteMonitor: https://seq.typingrealm.org
 
     - PgAdmin:
         icon: pgadmin.png
         href: https://pgadmin.typingrealm.org
         description: PostgreSQL browser for pet projects
+        siteMonitor: https://pgadmin.typingrealm.org
 
     - Redis Insights:
         icon: redis.png
         href: https://redisinsight.typingrealm.org
         description: Redis browser for pet projects
+        siteMonitor: https://redisinsight.typingrealm.org
 
     - KartMan:
         icon: https://kartman.typingrealm.org/favicon.ico
         href: https://kartman.typingrealm.org
         description: Batumi karting manager
+        siteMonitor: https://kartman.typingrealm.com
 
     - Habits:
-        icon: https://habits.typingrealm.com/favicon.ico
-        href: https://habits.typingrealm.com
+        icon: https://habits.typingrealm.org/favicon.ico
+        href: https://habits.typingrealm.org
         description: Personal habits tracker
+        siteMonitor: https://habits.typingrealm.org
 
     - Nitrotype Tracker:
         icon: https://tnt.typingrealm.org/favicon.ico
         href: https://tnt.typingrealm.org
         description: Typing game tracker for KECATS team
+        siteMonitor: https://kecats.typingrealm.com
 
     - OverLab:
         icon: https://overlab.typingrealm.org/favicon.ico
         href: https://overlab.typingrealm.org
         description: Bodybuilding progress tracker
+        siteMonitor: https://overlab.typingrealm.org
