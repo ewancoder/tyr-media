@@ -4,9 +4,9 @@
     cpu: true
     memory: true
     disk:
-      - /stats/root
-      - /stats/configs
-      - /stats/data
+      - /app/config
+      - /stats/hot
+      - /stats/cold
     cputemp: true
     tempmin: 25
     tempmax: 80

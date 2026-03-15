@@ -1,3 +1,4 @@
+#!/bin/sh
 # Sync Jellyfin backdrop images to a flat screensaver folder.
 
 API_URL="http://localhost:8096"
