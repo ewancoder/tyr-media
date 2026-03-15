@@ -2,6 +2,30 @@
 
 This is a media server for media library management. It uses PIA WireGuard vpn provider, if you have a different VPN provider or need to use OpenVPN - you might need to tweak the scripts.
 
+## Design decisions / architecture
+
+Everything is stored under one big **master** folder.
+
+Whole **/master** folder is mounted as a volume to each container. This is to avoid misconfiguration and miscommunication between containers and hardlinking.
+
+- **master/configs** - the folder with all the configs of all the services: save this folder, back it up, treasure it. This is the folder to rule them all! This is what makes it possible to migrate / move / restart / upgrade the stack of services seamlessly and let them keep working. You set it all up once - and you keep this folder. It should be fast (SSD) because it stores metadata, artwork, etc.
+- **master/cache** - cache folder, used for different caches. Ideally, it should be fast (SSD), but can be slow if you're running out of space. It can be quite big (stores transcoded streams of videos from Jellyfin) so occasional cleaning might be needed
+  - **master/cache/jellyfin** - jellyfin cache (including transcodes)
+- **master/hot** and **master/cold** folders - everything under **hot** is **SSD**, everything under **cold** is **HDD**, for better management
+- **master/{hot,cold}/downloads** - downloads folder for your torrent tracker. It can be HDD, but it might slow it down with a lot of random writes/reads, so usually it's better to use an SSD if you can afford a "buffer" SSD just for downloads
+  - **master/{hot,cold}/downloads/content** - download to this folder in order for it to appear in the Jellyfin
+- **master/{hot,cold}/media** - media files
+  - `/{movies, shows, comics}`
+- **master/backdrops** - this is a special folder where we store screensaver backdrops (automatically retrieved from Jellyfin)
+
+The reason for having a separate `media-cold` and `media-hot` folders is to know for sure where are the files that are stored on the SSD, and where are the files that are stored on the HDD. If you only use SSD, or only use HDD - just leave the other folder unused. Keep it for future in case you want to expand.
+
+The idea of my setup is the following: we download the data to SSD "buffer", then we **handlink** the files to the **media-hot** storage, so that import is fast and seamless, and sonarr doesn't wait for copying of the files, and we can instantly watch it as needed.
+
+Later on, when we need to store it for "cold storage", or scheduled with a script (for example, when torrent stops seeding) - we move the files (using Sonarr/Radarr API) to the **media-cold** so that it is persisted and remains accessible if needed.
+
+> Torrents can also be configured to seed the files from the cold storage if you want, but this would of course incur a random read penalty to the drive.
+
 ## How to start
 
 1. Configure mandatory variables in `.env` file:
