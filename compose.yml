@@ -54,6 +54,18 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "wget --spider http://localhost:8888 2>&1 | grep -q '400 Bad Request' || exit 1"]
 
+  tyr-media-backdrops-sync:
+    image: alpine:latest
+    container_name: tyr-media-backdrops-sync
+    environment:
+      - JELLYFIN_API_KEY=${JELLYFIN_API_KEY}
+    command: sh -c 'apk add curl jq && while true; do /backdrops-sync.sh; sleep 300; done'
+    volumes:
+      - ./scripts/backdrops-sync.sh:/backdrops-sync.sh:ro
+      - ${BACKDROPS_FOLDER}:/backdrops
+    restart: unless-stopped
+    network_mode: service:tyr-media-gluetun
+
   tyr-media-prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
     container_name: tyr-media-prowlarr
@@ -210,7 +222,7 @@ services:
       - 80:3000
     volumes:
       - ${HOMEPAGE_FOLDER}:/app/config
-      - ${SCREENSAVER_FOLDER}:/app/public/images
+      - ${BACKDROPS_FOLDER}:/app/public/images
       - type: bind
         source: ./homepage/bookmarks.yaml
         target: /app/config/bookmarks.yaml
