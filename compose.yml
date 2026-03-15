@@ -210,6 +210,7 @@ services:
       - 80:3000
     volumes:
       - ${HOMEPAGE_FOLDER}:/app/config
+      - ${SCREENSAVER_FOLDER}:/app/public/images
       - type: bind
         source: ./homepage/bookmarks.yaml
         target: /app/config/bookmarks.yaml
@@ -219,9 +220,9 @@ services:
       - type: bind
         source: ./homepage/widgets.yaml
         target: /app/config/widgets.yaml
-      - ${CONFIGS_FOLDER}:/stats/configs
-      - ${DATA_FOLDER}:/stats/data
-      - ${FAST_DATA_FOLDER}:/fast-data
+      - ${STATS_ROOT_FOLDER}:/stats/root
+      - ${STATS_CONFIGS_FOLDER}:/stats/configs
+      - ${STATS_DATA_FOLDER}:/stats/data
     restart: unless-stopped
     networks:
       - tyr-media-net

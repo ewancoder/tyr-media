@@ -1,17 +1,14 @@
 ---
 
 - resources:
-    label: System
     cpu: true
     memory: true
+    disk:
+      - /stats/root
+      - /stats/configs
+      - /stats/data
     cputemp: true
     tempmin: 25
     tempmax: 80
     network: true
     uptime: true
-
-- resources:
-    label: Drives
-    disk:
-      - /stats/configs
-      - /stats/data
