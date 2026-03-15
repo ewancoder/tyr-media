@@ -1,0 +1,6 @@
+:root,
+:root[data-theme="dark"] {
+  --color-900: 0 0 0 !important;
+  --color-800: 10 10 10 !important;
+  --color-700: 20 20 20 !important;
+}
