@@ -134,7 +134,7 @@ services:
       - ${CONFIGS_FOLDER}/sonarr:/config
       - ${HOT_FOLDER}:/hot
       - ${COLD_FOLDER}:/cold
-      - ${HOT_FOLDER}:/data # For compatibility.
+      #- ${HOT_FOLDER}:/data # For compatibility.
     restart: unless-stopped
     network_mode: service:tyr-lab-gateway
     healthcheck:
@@ -151,7 +151,7 @@ services:
       - ${CONFIGS_FOLDER}/radarr:/config
       - ${HOT_FOLDER}:/hot
       - ${COLD_FOLDER}:/cold
-      - ${HOT_FOLDER}:/data # For compatibility.
+      #- ${HOT_FOLDER}:/data # For compatibility.
     restart: unless-stopped
     network_mode: service:tyr-lab-gateway
     healthcheck:
@@ -168,7 +168,7 @@ services:
       - ${CONFIGS_FOLDER}/bazarr:/config
       - ${HOT_FOLDER}:/hot
       - ${COLD_FOLDER}:/cold
-      - ${HOT_FOLDER}:/data # For compatibility.
+      #- ${HOT_FOLDER}:/data # For compatibility.
     restart: unless-stopped
     network_mode: service:tyr-lab-gateway
     healthcheck:
@@ -185,7 +185,7 @@ services:
       - ${CONFIGS_FOLDER}/qbittorrent:/config
       - ${HOT_FOLDER}:/hot
       - ${COLD_FOLDER}:/cold
-      - ${HOT_FOLDER}:/data # For compatibility.
+      #- ${HOT_FOLDER}:/data # For compatibility.
     restart: unless-stopped
     network_mode: service:tyr-lab-gateway
     healthcheck:
@@ -218,7 +218,7 @@ services:
       - ${CACHE_FOLDER}/jellyfin:/cache
       - ${HOT_FOLDER}:/hot
       - ${COLD_FOLDER}:/cold
-      - ${HOT_FOLDER}:/data # For compatibility.
+      #- ${HOT_FOLDER}:/data # For compatibility.
     restart: unless-stopped
     network_mode: service:tyr-lab-gateway
     deploy:
@@ -242,7 +242,7 @@ services:
       - ${CONFIGS_FOLDER}/kavita:/config
       - ${HOT_FOLDER}:/hot
       - ${COLD_FOLDER}:/cold
-      - ${HOT_FOLDER}:/data # For compatibility.
+      #- ${HOT_FOLDER}:/data # For compatibility.
     restart: unless-stopped
     network_mode: service:tyr-lab-gateway
     healthcheck:
@@ -286,4 +286,4 @@ services:
       - ${CONFIGS_FOLDER}/kapowarr:/app/db
       - ${HOT_FOLDER}:/hot
       - ${COLD_FOLDER}:/cold
-      - ${HOT_FOLDER}:/data # For compatibility.
+      #- ${HOT_FOLDER}:/data # For compatibility.
