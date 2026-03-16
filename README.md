@@ -62,6 +62,7 @@ Just run `./update.sh`.
   - WebUI -> Bypass authentication for clients on localhost
   - WebUI -> Bypass authentication for clients in whitelisted IP subnets
     - Include `172.16.0.0/12` address - docker IP ranges for local addresses
+    - Consider including `192.168.1.0/24` (or whatever is your subnet) for convenience
 - Update admin password (WebUI, qwerty)
 - Change downloads folder to /data/downloads
 - Check port, restart EVERYTHING, check port again - should be changed to the one forwarded by PIA
