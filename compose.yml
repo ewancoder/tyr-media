@@ -59,6 +59,9 @@ services:
       - type: bind
         source: ./homepage/custom.css
         target: /app/config/custom.css
+      - type: bind
+        source: ./homepage/custom.js
+        target: /app/config/custom.js
       - ${HOMEPAGE_DISK_STATS_HOT}:/stats/hot
       - ${HOMEPAGE_DISK_STATS_COLD}:/stats/cold
     restart: unless-stopped

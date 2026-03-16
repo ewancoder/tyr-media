@@ -23,5 +23,8 @@ curl -s "$API_URL/Items?api_key=$API_KEY&Recursive=true&IncludeItemTypes=Series,
 
 echo "Done. Downloaded to $OUTPUT_DIR/"
 
-random=$(find $OUTPUT_DIR -type f | grep -v current | shuf | head -1)
+random=$(find $OUTPUT_DIR -type f ! -iname '*.json' | grep -v current | shuf | head -1)
 cp "$random" "$OUTPUT_DIR/current.jpg"
+
+# Create a manifest file for rotating images using javascript.
+find "$OUTPUT_DIR" -type f | sed "s|$OUTPUT_DIR|/images|" | sort | jq -R -s 'split("\n") | map(select(. != ""))' > "$OUTPUT_DIR/images.json"
