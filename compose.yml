@@ -5,6 +5,22 @@ networks:
     name: tyr-lab-net
 
 services:
+  dockerproxy:
+    image: ghcr.io/tecnativa/docker-socket-proxy:latest
+    container_name: tyr-lab-dockerproxy
+    environment:
+      - CONTAINERS=1  # Allow access to viewing containers
+      - SERVICES=1    # Allow access to viewing services (Swarm)
+      - TASKS=1       # Allow access to viewing tasks (Swarm)
+      - POST=0        # Disallow any POST operations (read-only)
+    ports:
+      - 192.168.1.130:2375:2375
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    networks:
+      - tyr-lab-net
+    restart: unless-stopped
+
   # This container can be transformed into a VPN-container, to enable VPN for everything.
   tyr-lab-gateway:
     image: alpine:latest
@@ -44,6 +60,9 @@ services:
     volumes:
       - ${CONFIGS_FOLDER}/homepage:/app/config
       - ${BACKDROPS_FOLDER}:/app/public/images
+      - type: bind
+        source: ./homepage/docker.yaml
+        target: /app/config/docker.yaml
       - type: bind
         source: ./homepage/bookmarks.yaml
         target: /app/config/bookmarks.yaml

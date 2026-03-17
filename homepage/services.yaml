@@ -43,6 +43,12 @@
         href: http://asgard.local:8080
         description: qBitTorrent
         siteMonitor: http://192.168.1.130:8080
+        showStats: true
+        widget:
+          type: qbittorrent
+          url: http://192.168.1.130:8080
+        server: local
+        container: tyr-lab-qbittorrent
 
     - TV Shows Tracker:
         icon: sonarr.png

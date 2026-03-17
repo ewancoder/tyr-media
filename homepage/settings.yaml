@@ -6,3 +6,6 @@ color: slate
 background:
   image: /images/current.jpg
   opacity: 30 # 0-100
+
+headerStyle: boxedWidgets
+showStats: true
