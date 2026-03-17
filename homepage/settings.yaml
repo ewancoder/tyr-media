@@ -9,3 +9,8 @@ background:
 
 headerStyle: boxedWidgets
 showStats: true
+
+layout:
+  System:
+    style: row
+    columns: 4

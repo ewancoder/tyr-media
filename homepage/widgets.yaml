@@ -10,5 +10,4 @@
     cputemp: true
     tempmin: 25
     tempmax: 80
-    network: true
     uptime: true

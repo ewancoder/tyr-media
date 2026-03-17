@@ -5,7 +5,7 @@ networks:
     name: tyr-lab-net
 
 services:
-  dockerproxy:
+  tyr-lab-dockerproxy:
     image: ghcr.io/tecnativa/docker-socket-proxy:latest
     container_name: tyr-lab-dockerproxy
     environment:
@@ -86,6 +86,33 @@ services:
       - tyr-lab-net
     healthcheck:
       test: ["CMD-SHELL", "wget --spider http://127.0.0.1:3000 || exit 1"]
+
+  tyr-lab-glances:
+    image: 'nicolargo/glances:ubuntu-latest-full'
+    container_name: tyr-lab-glances
+    pid: host
+    privileged: true
+    environment:
+      - GLANCES_OPT=-w
+      - DOCKER_HOST=tcp://tyr-lab-dockerproxy:2375
+    ports:
+      - ${GLANCES_PORT}:61208
+    #volumes:
+    #  - './glances/glances.conf:/glances/conf/glances.conf'
+    volumes:
+      - ${CONFIGS_FOLDER}/homepage:/stats/config
+      - ${HOMEPAGE_DISK_STATS_HOT}:/stats/hot
+      - ${HOMEPAGE_DISK_STATS_COLD}:/stats/cold
+    restart: unless-stopped
+    networks:
+      - tyr-lab-net
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
 
   tyr-lab-adguard:
     image: adguard/adguardhome:latest
