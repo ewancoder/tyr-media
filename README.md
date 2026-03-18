@@ -122,6 +122,7 @@ Enable: sonarr, radarr
   - Add New Profile
     - English, English, Cutoff en, Default for series/movies: English, save
   - Bulk edit existing: select language
+- !! Uncheck "treat Embedded as downloaded" to always have srt file
 
 ### Set up indexers - Prowlarr
 
