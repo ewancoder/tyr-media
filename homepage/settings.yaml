@@ -8,9 +8,19 @@ background:
   opacity: 30 # 0-100
 
 headerStyle: boxedWidgets
-showStats: true
+showStats: false
+#cardBlur: xs
 
 layout:
   System:
     style: row
     columns: 4
+    icon: mdi-chip
+  Media:
+    icon: mdi-television-classic
+  Management:
+    icon: mdi-cogs
+  Pet projects:
+    icon: mdi-rocket-launch
+  I/O and temps:
+    icon: mdi-swap-vertical
