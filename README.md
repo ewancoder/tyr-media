@@ -150,6 +150,7 @@ Enable: sonarr, radarr
   - Movies: /data/media/movies
   - Shows: /data/media/shows
   - Home Vid/Photos: /data/downloads/content
+  - Consider adding dedicated F1 library / any thematic libraries
 - Leave checked allow remote connections
 
 General - Cache path: /data/jellyfin-cache
@@ -195,6 +196,7 @@ Other Plugins (manual installation)
 - Playback - Transcoding - NVENC + Enable for everything (all formats)
 - User settings - do not allow transcoding for ewancoder (force direct play)
   - Skip this, I want to watch a movie that doesn't play direct lol
+  - But do use it for HDR movies, jellyfin is shit when it comes to HDR transcoding
 
 - Scan all libraries, check that content is present.
 - Log in as each user, and set up for user:
