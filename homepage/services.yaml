@@ -1,5 +1,4 @@
 ---
-
 - System:
     - CPU:
         widget:
@@ -97,7 +96,7 @@
         container: tyr-lab-qbittorrent
         widget:
           type: qbittorrent
-          url: http://192.168.1.130:8080
+          url: http://tyr-lab-gateway:8080
 
     - TV Shows Tracker:
         icon: sonarr.png
