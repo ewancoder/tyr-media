@@ -16,20 +16,6 @@
         server: local
         container: home-jellyfin
 
-    - System state (WSL2):
-        icon: glances.png
-        href: http://master.local:61208
-        description: Glances
-        siteMonitor: http://home-glances:61208
-        server: local
-        container: home-glances
-
-    - Track it:
-        icon: trakt.png
-        href: https://trakt.tv
-        description: trakt.tv
-        #siteMonitor: https://trakt.tv
-
     - Trakt app:
         icon: trakt.png
         href: https://app.trakt.tv
@@ -88,6 +74,15 @@
         siteMonitor: http://home-gateway:9696
         server: local
         container: home-prowlarr
+
+- System:
+    - System state (WSL2):
+        icon: glances.png
+        href: http://master.local:61208
+        description: Glances
+        siteMonitor: http://home-glances:61208
+        server: local
+        container: home-glances
 
     - Ads blocking:
         icon: adblock.png

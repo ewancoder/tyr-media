@@ -6,9 +6,6 @@ color: slate
 
 background:
   image: /images/current.jpg
-  blur: sm
-  saturate: 50
-  brightness: 50
   opacity: 30 # 0-100
 
 headerStyle: boxedWidgets
@@ -20,13 +17,15 @@ hideGroupTitles: true
 layout:
   Media:
     tab: Services
-    style: row
-    columns: 4
+    style: column
 
   Management:
     tab: Services
-    style: row
-    columns: 4
+    style: column
+
+  System:
+    tab: Services
+    style: column
 
   Personal:
     tab: Bookmarks
