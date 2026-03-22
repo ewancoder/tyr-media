@@ -1,4 +1,4 @@
 #!/bin/bash
-docker stop tyr-lab-homepage
-docker rm tyr-lab-homepage
+docker stop home-homepage
+docker rm home-homepage
 ./start.sh

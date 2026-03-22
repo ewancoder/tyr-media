@@ -5,15 +5,17 @@
 
   // Fetch image manifest
   let images;
+
   try {
-    const res = await fetch("/images/images.json?t=" + Date.now());
+    const res = await fetch('/images/images.json?t=' + Date.now());
     images = await res.json();
   } catch (e) {
-    console.log("bg-rotate: failed to fetch images.json", e);
+    console.warn('bg-rotate: failed to fetch images.json', e);
     return;
   }
+
   if (!images.length) {
-    console.log("bg-rotate: no images found");
+    console.warn('bg-rotate: no images found');
     return;
   }
 
@@ -24,22 +26,22 @@
   }
 
   // Find Homepage's background div
-  const bgDiv = [...document.querySelectorAll("*")].find((el) =>
-    getComputedStyle(el).backgroundImage.includes("/images/")
+  const bgDiv = [...document.querySelectorAll('*')].find((el) =>
+    getComputedStyle(el).backgroundImage.includes('/images/'),
   );
+
   if (!bgDiv) {
-    console.log("bg-rotate: background div not found");
+    console.warn('bg-rotate: background div not found');
     return;
   }
 
   const pos = getComputedStyle(bgDiv).position;
-  if (pos === "static") bgDiv.style.position = "relative";
-  bgDiv.style.overflow = "hidden";
+  if (pos === 'static') bgDiv.style.position = 'relative';
+  bgDiv.style.overflow = 'hidden';
 
   // Recreate the dark overlay that Homepage normally bakes into the background
-  const gradient = document.createElement("div");
-  gradient.style.cssText =
-    "position:absolute;inset:0;background:rgba(10,10,10,0.7);z-index:1;";
+  const gradient = document.createElement('div');
+  gradient.style.cssText = 'position:absolute;inset:0;background:rgba(10,10,10,0.7);z-index:1;';
   bgDiv.appendChild(gradient);
 
   let current = 0;
@@ -61,7 +63,7 @@
   }
 
   function show(index, fade) {
-    const el = document.createElement("div");
+    const el = document.createElement('div');
     el.style.cssText = `
       position:absolute;inset:0;z-index:0;
       background:url("${images[index]}") center/cover no-repeat;
@@ -73,11 +75,11 @@
       el.getBoundingClientRect();
       el.style.transition = `opacity ${FADE_MS}ms ease-in-out`;
     }
-    el.style.opacity = "1";
+    el.style.opacity = '1';
 
     // Remove original background on first show
     if (!currentEl) {
-      bgDiv.style.backgroundImage = "none";
+      bgDiv.style.backgroundImage = 'none';
     }
 
     const old = currentEl;
@@ -100,6 +102,5 @@
   }
 
   setInterval(next, INTERVAL_MS);
-
-  console.log(`bg-rotate: started with ${images.length} images, ${INTERVAL_MS / 1000}s interval`);
+  console.info(`bg-rotate: started with ${images.length} images, ${INTERVAL_MS / 1000}s interval`);
 })();

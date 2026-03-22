@@ -1,61 +1,53 @@
 ---
+- Services:
+    - Video Control:
+        - icon: https://myvideo.beltelecom.by/s3/vms-store/favicons/client/favicon.ico
+          href: https://myvideo.beltelecom.by/cam
+          description: Beltelelecom video surveillance
 
-- Repositories:
-    - Personal profile:
-        - icon: github
-          href: https://github.com/ewancoder
-          description: My personal GitHub profile
+    - Router Settings:
+        - icon: router
+          href: http://192.168.31.1/
+          description: Router Xiaomi Router BE3600 RD16
 
-    - TYR organization:
-        - icon: github
-          href: https://github.com/ewancoder-tyr
-          description: TyR (TypingRealm) pet projects organization
+    - Mouse settings:
+        - icon: https://139v2mc.yjx2012.com/products/mouse.png
+          href: https://139v2mc.yjx2012.com/
+          description: Mouse AJAZZ AJ139 V2 MC
 
-    - Dotfiles:
-        - icon: github
-          href: https://github.com/ewancoder/dotfiles
-          description: My latest Arch Linux configuration
+    - Webcamtest:
+        - icon: https://static.webcamtests.com/theme/img/logo/32.png
+          href: https://webcamtests.com/
+          description: Test webcam online
 
-    - Real:
-        - icon: github
-          href: https://github.com/ewancoder/real
-          description: Latest attempt for an Arch Linux script, not universal for now
+    - Speedtest:
+        - icon: https://b.cdnst.net/images/favicons/favicon-180.png
+          href: https://www.speedtest.net/
+          description: Internet Speed Test
 
-    - FoulBot:
-        - icon: github
-          href: https://github.com/ewancoder/foulbot
-          description: Current AI bots implementation for Telegram & Discord
+    - Fast:
+        - icon: https://fast.com/assets/favicons/apple-icon-76x76.png
+          href: https://fast.com/
+          description: Internet Speed Test
 
-- Social:
-    - Personal website / CV:
-        - icon: https://ewancoder.github.io/favicon.ico
-          href: https://ewancoder.github.io
+    - Banki24:
+        - icon: https://banki24.by/favicon.svg
+          href: https://banki24.by/
+          description: Online banking and financial services in Belarus
 
-    - Public GitHub profile:
+- Personal:
+    - Gmail:
+        - icon: gmail
+          href: https://mail.google.com/
+
+    - GitHub:
         - icon: github.png
-          href: https://github.com/ewancoder
+          href: https://github.com/Vonubat
 
-    - LinkedIn profile:
+    - LinkedIn:
         - icon: linkedin.png
-          href: https://www.linkedin.com/in/ivan-zyranau
+          href: https://www.linkedin.com/in/egor-tabunov/
 
-    - YouTube channel:
-        - icon: youtube.png
-          href: https://www.youtube.com/channel/UCQzd85vUhiVJ_5TJ0JcvCLw
-
-    - Discord:
-        - icon: discord.png
-          href: https://discordapp.com/users/669515089920917504
-
-    - NitroType profile:
-        - abbr: N
-          icon: https://www.nitrotype.com/favicon.ico
-          href: https://www.nitrotype.com/racer/ivanzyranau
-
-    - My knowledge:
-        - icon: https://coggle.it/favicon.ico
-          href: https://coggle.it/diagram/VMqVMtnNZwUlUfV6/t/development/2110b4221ea85822abdcd28b87075f2140faea3ec6bfa4c1c5cc5618ebc8689e
-
-    - StackOverflow profile:
-        - icon: https://stackoverflow.com/favicon.ico
-          href: https://stackoverflow.com/users/3270191/ivan-zyranau
+    - RS School:
+        - icon: https://app.rs.school/static/images/favicon.ico
+          href: https://app.rs.school/

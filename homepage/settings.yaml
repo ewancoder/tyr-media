@@ -1,26 +1,35 @@
 ---
-
+title: Home media center
+description: A collection of services to manage and enjoy media library, all running in Docker containers and orchestrated with Docker Compose.
 theme: dark
 color: slate
 
 background:
   image: /images/current.jpg
+  blur: sm
+  saturate: 50
+  brightness: 50
   opacity: 30 # 0-100
 
 headerStyle: boxedWidgets
 showStats: false
+hideVersion: true
+hideGroupTitles: true
 #cardBlur: xs
 
 layout:
-  System:
+  Media:
+    tab: Services
     style: row
     columns: 4
-    icon: mdi-chip
-  Media:
-    icon: mdi-television-classic
+
   Management:
-    icon: mdi-cogs
-  Pet projects:
-    icon: mdi-rocket-launch
-  I/O and temps:
-    icon: mdi-swap-vertical
+    tab: Services
+    style: row
+    columns: 4
+
+  Personal:
+    tab: Bookmarks
+
+  Services:
+    tab: Bookmarks

@@ -29,8 +29,6 @@ PROWLARR_URL="http://localhost:${PROWLARR_PORT}"
 JELLYFIN_URL="http://localhost:${JELLYFIN_PORT}"
 SEERR_URL="http://localhost:${SEERR_PORT}"
 JELLYSTAT_URL="http://localhost:${JELLYSTAT_PORT}"
-KAVITA_URL="http://localhost:${KAVITA_PORT}"
-KAPOWARR_URL="http://localhost:${KAPOWARR_PORT}"
 
 # ─── Output helpers ─────────────────────────────────────────────
 GREEN='\033[0;32m'; YELLOW='\033[1;33m'; RED='\033[0;31m'; BLUE='\033[0;34m'; CYAN='\033[0;36m'; BOLD='\033[1m'; NC='\033[0m'
@@ -43,14 +41,13 @@ section() { echo -e "\n${BLUE}════════════════�
 # ─── Gather credentials ────────────────────────────────────────
 section "Gathering credentials"
 
-read -p "Main username (default: ewancoder): " MAIN_USER
-MAIN_USER="${MAIN_USER:-ewancoder}"
+read -p "Main username (default: vonubat): " MAIN_USER
+MAIN_USER="${MAIN_USER:-vonubat}"
 
 read -p "Kinozal username: " KINOZAL_USER
 read -sp "Kinozal password: " KINOZAL_PASS; echo
 read -p "RuTracker username: " RUTRACKER_USER
 read -sp "RuTracker password: " RUTRACKER_PASS; echo
-read -p "ComicVine API key (for Kapowarr, leave empty to skip): " COMICVINE_API_KEY
 read -p "Jellyfin login disclaimer text: " JELLYFIN_DISCLAIMER
 
 # ─── Helper functions ───────────────────────────────────────────
@@ -100,7 +97,7 @@ configure_qbittorrent() {
     if [ "${QBITTORRENT_WEBUI_PORT}" != "8080" ]; then
         info "Custom port detected ($QBITTORRENT_WEBUI_PORT), disabling host header validation..."
         local qbt_conf="${QBITTORRENT_FOLDER}/qBittorrent/qBittorrent.conf"
-        docker stop tyr-media-qbittorrent
+        docker stop home-media-qbittorrent
         if [ -f "$qbt_conf" ]; then
             if grep -q "WebUI\\\\HostHeaderValidation" "$qbt_conf"; then
                 sed -i 's/WebUI\\HostHeaderValidation=.*/WebUI\\HostHeaderValidation=false/' "$qbt_conf"
@@ -109,14 +106,14 @@ configure_qbittorrent() {
             fi
             log "Host header validation disabled"
         fi
-        docker start tyr-media-qbittorrent
+        docker start home-media-qbittorrent
     fi
 
     # Get temporary password from docker logs
     info "Getting temporary password from docker logs..."
     sleep 5
     local temp_pass
-    temp_pass=$(docker logs tyr-media-qbittorrent 2>&1 | grep -oP 'temporary password.*: \K\S+' | tail -1)
+    temp_pass=$(docker logs home-media-qbittorrent 2>&1 | grep -oP 'temporary password.*: \K\S+' | tail -1)
     if [ -z "$temp_pass" ]; then
         err "Could not find temporary password in qBitTorrent logs"
         return 1
@@ -184,7 +181,7 @@ PREFS
     info "Checking listening port (PIA port forwarding)..."
     local listen_port pia_port
     listen_port=$(curl -s -b "$cookie_jar" "$QB_URL/api/v2/app/preferences" | jq -r '.listen_port')
-    pia_port=$(docker logs tyr-media-gluetun 2>&1 | grep -oP '\[port forwarding\] port forwarded is \K\d+' | tail -1)
+    pia_port=$(docker logs home-media-gluetun 2>&1 | grep -oP '\[port forwarding\] port forwarded is \K\d+' | tail -1)
     if [ "$listen_port" != "$pia_port" ]; then
         err "Port mismatch: qBittorrent=$listen_port, PIA forwarded=$pia_port"
         read -rp "    [Enter] to continue anyway / Ctrl-C to abort: " _ </dev/tty
@@ -1010,194 +1007,6 @@ configure_seerr() {
 }
 
 # ═══════════════════════════════════════════════════════════════
-#  Kavita
-# ═══════════════════════════════════════════════════════════════
-configure_kavita() {
-    section "Configuring Kavita"
-
-    wait_for_service "Kavita" "$KAVITA_URL"
-
-    # Register or login
-    local token
-    local register_result
-    register_result=$(curl -s -X POST -H "Content-Type: application/json" \
-        "$KAVITA_URL/api/account/register" \
-        -d "{\"username\": \"$MAIN_USER\", \"password\": \"qwerty\"}")
-
-    token=$(echo "$register_result" | jq -r '.token // empty' 2>/dev/null)
-    if [ -n "$token" ]; then
-        log "Kavita account created"
-    else
-        info "Registration failed (account may exist), trying login..."
-        token=$(curl -s -X POST -H "Content-Type: application/json" \
-            "$KAVITA_URL/api/account/login" \
-            -d "{\"username\": \"$MAIN_USER\", \"password\": \"qwerty\"}" \
-            | jq -r '.token // empty' 2>/dev/null)
-        if [ -n "$token" ]; then
-            log "Logged in to Kavita"
-        else
-            warn "Could not register or login to Kavita - configure manually at $KAVITA_URL"
-            return 1
-        fi
-    fi
-
-    # Enable folder watching
-    info "Enabling folder watching..."
-    local settings
-    settings=$(curl -s -H "Authorization: Bearer $token" "$KAVITA_URL/api/settings")
-    if echo "$settings" | jq -e 'has("enableFolderWatching")' > /dev/null 2>&1; then
-        settings=$(echo "$settings" | jq '.enableFolderWatching = true')
-        local settings_result
-        settings_result=$(curl -s -X POST -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $token" \
-            "$KAVITA_URL/api/settings" \
-            -d "$settings")
-        if echo "$settings_result" | jq -e '.enableFolderWatching == true' > /dev/null 2>&1; then
-            log "Folder watching enabled"
-        else
-            warn "Could not enable folder watching: $settings_result"
-        fi
-    else
-        warn "Could not fetch Kavita settings"
-    fi
-
-    # Add Comics library (if none exists)
-    local libraries
-    libraries=$(curl -s -H "Authorization: Bearer $token" "$KAVITA_URL/api/library/libraries")
-    local lib_count
-    lib_count=$(echo "$libraries" | jq 'length' 2>/dev/null || echo "0")
-    if [ "$lib_count" -gt 0 ]; then
-        log "Kavita already has $lib_count library/libraries; skipping creation"
-    else
-        info "Creating Comics library..."
-        local lib_result
-        lib_result=$(curl -s -o /dev/null -w "%{http_code}" -X POST -H "Content-Type: application/json" \
-            -H "Authorization: Bearer $token" \
-            "$KAVITA_URL/api/library/create" \
-            -d '{
-                "id": 0,
-                "name": "Comics",
-                "type": 1,
-                "folders": ["/data/media/comics"],
-                "folderWatching": true,
-                "includeInDashboard": true,
-                "includeInSearch": true,
-                "manageCollections": true,
-                "manageReadingLists": true,
-                "allowScrobbling": false,
-                "allowMetadataMatching": false,
-                "enableMetadata": true,
-                "removePrefixForSortName": false,
-                "inheritWebLinksFromFirstChapter": false,
-                "defaultLanguage": "en",
-                "fileGroupTypes": [1, 2, 3, 4],
-                "excludePatterns": []
-            }')
-        if [[ "$lib_result" =~ ^2 ]]; then
-            log "Comics library created"
-        else
-            warn "Comics library creation returned HTTP $lib_result"
-        fi
-    fi
-
-    log "Kavita configuration complete"
-}
-
-# ═══════════════════════════════════════════════════════════════
-#  Kapowarr
-# ═══════════════════════════════════════════════════════════════
-configure_kapowarr() {
-    section "Configuring Kapowarr"
-
-    wait_for_service "Kapowarr" "$KAPOWARR_URL"
-
-    # Get API key
-    local auth_result
-    auth_result=$(curl -s -X POST -H "Content-Type: application/json" \
-        "$KAPOWARR_URL/api/auth" -d '{}')
-    local KAP_KEY
-    KAP_KEY=$(echo "$auth_result" | jq -r '.result.api_key // empty' 2>/dev/null)
-    if [ -z "$KAP_KEY" ]; then
-        warn "Could not get Kapowarr API key - configure manually at $KAPOWARR_URL"
-        return 1
-    fi
-    log "Got Kapowarr API key"
-
-    # Ensure comics folder exists on host (mounted as /data inside container)
-    mkdir -p "${DATA_FOLDER}/media/comics"
-
-    # Add root folder (if none exists)
-    local root_folders
-    root_folders=$(curl -s "$KAPOWARR_URL/api/rootfolder?api_key=$KAP_KEY")
-    local rf_count
-    rf_count=$(echo "$root_folders" | jq '.result | length' 2>/dev/null || echo "0")
-    if [ "$rf_count" -gt 0 ]; then
-        log "Root folder already configured; skipping"
-    else
-        info "Adding root folder..."
-        local rf_result
-        rf_result=$(curl -s -X POST -H "Content-Type: application/json" \
-            "$KAPOWARR_URL/api/rootfolder?api_key=$KAP_KEY" \
-            -d '{"folder": "/data/media/comics"}')
-        if echo "$rf_result" | jq -e '.result.id' > /dev/null 2>&1; then
-            log "Root folder added: /data/media/comics"
-        else
-            warn "Root folder creation failed: $rf_result"
-        fi
-    fi
-
-    # Update settings
-    info "Updating settings..."
-    local settings_json
-    settings_json=$(jq -n '{
-        "download_folder": "/data/downloads",
-        "concurrent_direct_downloads": 10,
-        "failing_torrent_timeout": 1800,
-        "flaresolverr_base_url": "http://localhost:8191"
-    }')
-    if [ -n "$COMICVINE_API_KEY" ]; then
-        settings_json=$(echo "$settings_json" | jq --arg key "$COMICVINE_API_KEY" '. + {"comicvine_api_key": $key}')
-    fi
-    local settings_result
-    settings_result=$(curl -s -X PUT -H "Content-Type: application/json" \
-        "$KAPOWARR_URL/api/settings?api_key=$KAP_KEY" \
-        -d "$settings_json")
-    if echo "$settings_result" | jq -e '.error == null' > /dev/null 2>&1; then
-        log "Settings updated"
-    else
-        warn "Settings update failed: $settings_result"
-    fi
-
-    # Add qBittorrent client (if none exists)
-    local clients
-    clients=$(curl -s "$KAPOWARR_URL/api/externalclients?api_key=$KAP_KEY")
-    local client_count
-    client_count=$(echo "$clients" | jq '.result | length' 2>/dev/null || echo "0")
-    if [ "$client_count" -gt 0 ]; then
-        log "Torrent client already configured; skipping"
-    else
-        info "Adding qBittorrent client..."
-        local client_result
-        client_result=$(curl -s -X POST -H "Content-Type: application/json" \
-            "$KAPOWARR_URL/api/externalclients?api_key=$KAP_KEY" \
-            -d '{
-                "client_type": "qBittorrent",
-                "title": "qBittorrent",
-                "base_url": "http://localhost:8080",
-                "username": "",
-                "password": ""
-            }')
-        if echo "$client_result" | jq -e '.result.id' > /dev/null 2>&1; then
-            log "qBittorrent client added"
-        else
-            warn "qBittorrent client addition failed: $client_result"
-        fi
-    fi
-
-    log "Kapowarr configuration complete"
-}
-
-# ═══════════════════════════════════════════════════════════════
 #  Jellystat
 # ═══════════════════════════════════════════════════════════════
 configure_jellystat() {
@@ -1316,15 +1125,11 @@ main() {
     configure_jellyfin
     configure_seerr
     configure_jellystat
-    configure_kavita
-    configure_kapowarr
 
     section "Configuration Complete"
     log "All services have been configured."
     echo
     info "Post-configuration checklist (optional)"
-    info "  - Kapowarr: set dark theme in UI (localstorage, can't be automated)"
-    info "  - Kapowarr: log in to Mega if MFA allows (optional)"
     info "  - QBitTorrent: Show external IP in status bar"
 }
 

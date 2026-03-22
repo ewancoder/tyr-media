@@ -1,13 +1,15 @@
 ---
+- search:
+    provider: [google, duckduckgo]
+    focus: true
+    showSearchSuggestions: true
+    target: _blank
 
-- resources:
-    cpu: true
-    memory: true
-    disk:
-      - /app/config
-      - /stats/hot
-      - /stats/cold
-    cputemp: true
-    tempmin: 25
-    tempmax: 80
-    uptime: true
+- openmeteo:
+    label: Minsk, Belarus
+    timezone: Europe/Minsk
+    latitude: 53.9045
+    longitude: 27.5615
+    units: metric
+    cache: 5
+    forecast: 3

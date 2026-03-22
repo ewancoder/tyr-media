@@ -1,69 +1,28 @@
 ---
-- System:
-    - CPU:
-        widget:
-          type: glances
-          url: http://tyr-lab-glances:61208
-          version: 4
-          metric: cpu
-    - Memory:
-        widget:
-          type: glances
-          url: http://tyr-lab-glances:61208
-          version: 4
-          metric: memory
-    - Containers:
-        widget:
-          type: glances
-          url: http://tyr-lab-glances:61208
-          version: 4
-          metric: containers
-    - Processes:
-        widget:
-          type: glances
-          url: http://tyr-lab-glances:61208
-          version: 4
-          metric: process
-
 - Media:
-    - Hot media:
-        widget:
-          type: glances
-          url: http://tyr-lab-glances:61208
-          version: 4
-          metric: fs:/stats/hot
-
     - Request something:
         icon: seerr.png
-        href: http://asgard.local:5055
+        href: http://master.local:5055
         description: Seerr
-        siteMonitor: http://tyr-lab-gateway:5055
+        siteMonitor: http://home-gateway:5055
         server: local
-        container: tyr-lab-seerr
+        container: home-seerr
 
     - Watch something:
         icon: jellyfin.png
-        href: http://asgard.local:8096
+        href: http://master.local:8096
         description: Jellyfin
-        siteMonitor: http://tyr-lab-gateway:8096
+        siteMonitor: http://home-gateway:8096
         server: local
-        container: tyr-lab-jellyfin
+        container: home-jellyfin
 
-    - System state:
+    - System state (WSL2):
         icon: glances.png
-        href: http://asgard.local:61208
+        href: http://master.local:61208
         description: Glances
-        siteMonitor: http://tyr-lab-glances:61208
+        siteMonitor: http://home-glances:61208
         server: local
-        container: tyr-lab-glances
-
-    - Read something:
-        icon: kavita.png
-        href: http://asgard.local:10888
-        description: Kavita
-        siteMonitor: http://tyr-lab-gateway:5000
-        server: local
-        container: tyr-lab-kavita
+        container: home-glances
 
     - Track it:
         icon: trakt.png
@@ -79,144 +38,61 @@
 
     - Statistics:
         icon: jellystat.png
-        href: http://asgard.local:3000
+        href: http://master.local:3000
         description: Jellystat
-        siteMonitor: http://tyr-lab-gateway:3000
+        siteMonitor: http://home-gateway:3000
         server: local
-        container: tyr-lab-jellystat
+        container: home-jellystat
 
 - Management:
     - Torrents:
         icon: qbittorrent.png
-        href: http://asgard.local:8080
+        href: http://master.local:8080
         description: qBitTorrent
-        siteMonitor: http://tyr-lab-gateway:8080
+        siteMonitor: http://home-gateway:8080
         showStats: true
         server: local
-        container: tyr-lab-qbittorrent
+        container: home-qbittorrent
         widget:
           type: qbittorrent
-          url: http://tyr-lab-gateway:8080
+          url: http://home-gateway:8080
 
     - TV Shows Tracker:
         icon: sonarr.png
-        href: http://asgard.local:8989
+        href: http://master.local:8989
         description: Sonarr
-        siteMonitor: http://tyr-lab-gateway:8989
+        siteMonitor: http://home-gateway:8989
         server: local
-        container: tyr-lab-sonarr
+        container: home-sonarr
 
     - Movies Tracker:
         icon: radarr.png
-        href: http://asgard.local:7878
+        href: http://master.local:7878
         description: Radarr
-        siteMonitor: http://tyr-lab-gateway:7878
+        siteMonitor: http://home-gateway:7878
         server: local
-        container: tyr-lab-radarr
+        container: home-radarr
 
     - Subtitles Downloader:
         icon: bazarr.png
-        href: http://asgard.local:6767
+        href: http://master.local:6767
         description: Bazarr
-        siteMonitor: http://tyr-lab-gateway:6767
+        siteMonitor: http://home-gateway:6767
         server: local
-        container: tyr-lab-bazarr
+        container: home-bazarr
 
     - Indexers setup:
         icon: prowlarr.png
-        href: http://asgard.local:9696
+        href: http://master.local:9696
         description: Prowlarr
-        siteMonitor: http://tyr-lab-gateway:9696
+        siteMonitor: http://home-gateway:9696
         server: local
-        container: tyr-lab-prowlarr
-
-    - Comics setup:
-        icon: kapowarr.png
-        href: http://asgard.local:5656
-        description: Kapowarr
-        siteMonitor: http://tyr-lab-gateway:5656
-        server: local
-        container: tyr-lab-kapowarr
+        container: home-prowlarr
 
     - Ads blocking:
         icon: adblock.png
-        href: http://asgard.local:23002
+        href: http://master.local:23002
         description: AdGuard
-        siteMonitor: http://tyr-lab-adguard:80/login.html
+        siteMonitor: http://home-adguard:80/login.html
         server: local
-        container: tyr-lab-adguard
-
-- Pet projects:
-    - Seq logs:
-        icon: seq.png
-        href: https://seq.typingrealm.org
-        description: Logging system for pet projects
-        #siteMonitor: https://seq.typingrealm.org
-
-    - PgAdmin:
-        icon: pgadmin.png
-        href: https://pgadmin.typingrealm.org
-        description: PostgreSQL browser for pet projects
-        #siteMonitor: https://pgadmin.typingrealm.org
-
-    - Redis Insights:
-        icon: redis.png
-        href: https://redisinsight.typingrealm.org
-        description: Redis browser for pet projects
-        #siteMonitor: https://redisinsight.typingrealm.org
-
-    - KartMan:
-        icon: https://kartman.typingrealm.org/favicon.ico
-        href: https://kartman.typingrealm.org
-        description: Batumi karting manager
-        #siteMonitor: https://kartman.typingrealm.com
-
-    - Habits:
-        icon: https://habits.typingrealm.org/favicon.ico
-        href: https://habits.typingrealm.org
-        description: Personal habits tracker
-        #siteMonitor: https://habits.typingrealm.org
-
-    - Nitrotype Tracker:
-        icon: https://tnt.typingrealm.org/favicon.ico
-        href: https://tnt.typingrealm.org
-        description: Typing game tracker for KECATS team
-        #siteMonitor: https://kecats.typingrealm.com
-
-    - OverLab:
-        icon: https://overlab.typingrealm.org/favicon.ico
-        href: https://overlab.typingrealm.org
-        description: Bodybuilding progress tracker
-        #siteMonitor: https://overlab.typingrealm.org
-
-- I/O and temps:
-    - Network:
-        widget:
-          type: glances
-          url: http://tyr-lab-glances:61208
-          version: 4
-          metric: network:eth0
-    - HDD:
-        widget:
-          type: glances
-          url: http://tyr-lab-glances:61208
-          version: 4
-          metric: disk:sda
-    - GPU:
-        widget:
-          type: glances
-          url: http://tyr-lab-glances:61208
-          version: 4
-          metric: gpu:nvidia0
-    - CPU Temp:
-        widget:
-          type: glances
-          url: http://tyr-lab-glances:61208
-          version: 4
-          metric: sensor:Package id 0
-    - PCH Temp:
-        widget:
-          type: glances
-          url: http://tyr-lab-glances:61208
-          version: 4
-          metric: sensor:pch_cannonlake 0
+        container: home-adguard
