@@ -3,6 +3,15 @@ name: tyr-lab
 networks:
   tyr-lab-net:
     name: tyr-lab-net
+  lan:
+    driver: ipvlan
+    driver_opts:
+      parent: ${NETWORK_INTERFACE}
+      ipvlan_mode: l2
+    ipam:
+      config:
+        - subnet: ${LOCAL_SUBNET}
+          gateway: ${LOCAL_GATEWAY}
 
 services:
   tyr-lab-dockerproxy:
@@ -148,6 +157,22 @@ services:
     network_mode: service:tyr-lab-gateway
     healthcheck:
       test: ["CMD", "true"]
+
+  tyr-lab-backdrops-share:
+    image: dockurr/samba
+    container_name: tyr-lab-backdrops-share
+    restart: unless-stopped
+    volumes:
+      - ${BACKDROPS_FOLDER}:/storage
+    networks:
+      lan:
+        ipv4_address: ${BACKDROPS_SHARE_IP}
+    environment:
+      NAME: backdrops
+      USER: ${BACKDROPS_SHARE_USER}
+      PASS: ${BACKDROPS_SHARE_PASSWORD}
+      UID: 1000
+      GID: 1000
 
   tyr-lab-prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
