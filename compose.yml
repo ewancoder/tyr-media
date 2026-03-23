@@ -18,6 +18,8 @@ services:
     networks:
       - tyr-lab-net
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:2375/version"]
 
   # This container can be transformed into a VPN-container, to enable VPN for everything.
   tyr-lab-gateway:
@@ -113,6 +115,8 @@ services:
             - driver: nvidia
               count: 1
               capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://localhost:61208/api/4/status"]
 
   tyr-lab-adguard:
     image: adguard/adguardhome:latest
@@ -142,6 +146,8 @@ services:
       - ${BACKDROPS_FOLDER}:/backdrops
     restart: unless-stopped
     network_mode: service:tyr-lab-gateway
+    healthcheck:
+      test: ["CMD", "true"]
 
   tyr-lab-prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
@@ -306,6 +312,8 @@ services:
     volumes:
       - ${CONFIGS_FOLDER}/jellystat/pg:/var/lib/postgresql/data
     network_mode: service:tyr-lab-gateway
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
 
   tyr-lab-jellystat:
     image: 'cyfershepard/jellystat:latest'
@@ -334,3 +342,5 @@ services:
       - ${HOT_FOLDER}:/hot
       - ${COLD_FOLDER}:/cold
       #- ${HOT_FOLDER}:/data # For compatibility.
+    healthcheck:
+      test: ["CMD", "true"] # Kapowarr container doesn't have neither wget nor curl :(
