@@ -34,3 +34,7 @@ if [ ! -f ${CONFIGS_FOLDER}/prowlarr/Definitions/Custom/therarbg.yml ]; then
     mkdir -p ${CONFIGS_FOLDER}/prowlarr/Definitions/Custom
     cp indexers/* ${CONFIGS_FOLDER}/prowlarr/Definitions/Custom
 fi
+
+if [[ -z "$JELLYFIN_API_KEY" ]]; then
+    echo "Add JELLYFIN_API_KEY secret to .secrets file for backdrops sync to work"
+fi
