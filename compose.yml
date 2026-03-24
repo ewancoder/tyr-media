@@ -136,6 +136,7 @@ services:
       - ${CONFIGS_FOLDER}/adguard/work:/opt/adguardhome/work
       - ${CONFIGS_FOLDER}/adguard/conf:/opt/adguardhome/conf
     networks:
+      local-net:
       lan-net:
         ipv4_address: ${ADGUARD_IP}
     healthcheck:
