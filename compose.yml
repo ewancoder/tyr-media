@@ -1,9 +1,8 @@
-name: tyr-lab
+name: ${STACK}
 
 networks:
-  tyr-lab-net:
-    name: tyr-lab-net
-  lan:
+  local-net:  # Default network for communication between the services, and internet access.
+  lan-net:    # Special network for placing containers directly to the LAN network (with custom IP).
     driver: ipvlan
     driver_opts:
       parent: ${NETWORK_INTERFACE}
@@ -14,9 +13,11 @@ networks:
           gateway: ${LOCAL_GATEWAY}
 
 services:
-  tyr-lab-dockerproxy:
+  # Proxy to the docker daemon, safer than exposing the socket.
+  # Needed by the Glances service to display various info.
+  dockerproxy:
     image: ghcr.io/tecnativa/docker-socket-proxy:latest
-    container_name: tyr-lab-dockerproxy
+    container_name: ${STACK}-dockerproxy
     environment:
       - CONTAINERS=1  # Allow access to viewing containers
       - SERVICES=1    # Allow access to viewing services (Swarm)
@@ -25,19 +26,18 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     networks:
-      - tyr-lab-net
+      - local-net
     restart: unless-stopped
     healthcheck:
       test: ["CMD", "wget", "--spider", "-q", "http://localhost:2375/version"]
 
   # This container can be transformed into a VPN-container, to enable VPN for everything.
-  tyr-lab-gateway:
+  gateway:
     image: alpine:latest
     command: sleep infinity
-    container_name: tyr-lab-gateway
     restart: unless-stopped
     networks:
-      - tyr-lab-net
+      - local-net
     ports:
       - ${SONARR_PORT}:8989
       - ${RADARR_PORT}:7878
@@ -57,9 +57,8 @@ services:
     healthcheck:
       test: ["CMD", "true"]
 
-  tyr-lab-homepage:
+  homepage:
     image: ghcr.io/gethomepage/homepage:latest
-    container_name: tyr-lab-homepage
     environment:
       HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_HOSTNAME}
       PUID: ${USER_ID}
@@ -94,18 +93,17 @@ services:
       - ${HOMEPAGE_DISK_STATS_COLD}:/stats/cold
     restart: unless-stopped
     networks:
-      - tyr-lab-net
+      - local-net
     healthcheck:
       test: ["CMD-SHELL", "wget --spider http://127.0.0.1:3000 || exit 1"]
 
-  tyr-lab-glances:
+  glances:
     image: 'nicolargo/glances:ubuntu-latest-full'
-    container_name: tyr-lab-glances
     pid: host
     privileged: true
     environment:
       - GLANCES_OPT=-w
-      - DOCKER_HOST=tcp://tyr-lab-dockerproxy:2375
+      - DOCKER_HOST=tcp://${STACK}-dockerproxy:2375
     ports:
       - ${GLANCES_PORT}:61208
     #volumes:
@@ -116,7 +114,7 @@ services:
       - ${HOMEPAGE_DISK_STATS_COLD}:/stats/cold
     restart: unless-stopped
     networks:
-      - tyr-lab-net
+      - local-net
     deploy:
       resources:
         reservations:
@@ -127,9 +125,8 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-sf", "http://localhost:61208/api/4/status"]
 
-  tyr-lab-adguard:
+  adguard:
     image: adguard/adguardhome:latest
-    container_name: tyr-lab-adguard
     restart: unless-stopped
     ports:
       - 53:53/tcp
@@ -140,13 +137,12 @@ services:
       - ${CONFIGS_FOLDER}/adguard/work:/opt/adguardhome/work
       - ${CONFIGS_FOLDER}/adguard/conf:/opt/adguardhome/conf
     networks:
-      - tyr-lab-net
+      - local-net
     healthcheck:
       test: ["CMD-SHELL", "wget --spider http://127.0.0.1:80 || exit 1"]
 
-  tyr-lab-backdrops-sync:
+  backdrops-sync:
     image: alpine:latest
-    container_name: tyr-lab-backdrops-sync
     environment:
       - JELLYFIN_API_KEY=${JELLYFIN_API_KEY}
     command: sh -c 'apk add curl jq && while true; do /backdrops-sync.sh; sleep 300; done'
@@ -154,18 +150,17 @@ services:
       - ./scripts/backdrops-sync.sh:/backdrops-sync.sh:ro
       - ${BACKDROPS_FOLDER}:/backdrops
     restart: unless-stopped
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     healthcheck:
       test: ["CMD", "true"]
 
-  tyr-lab-backdrops-share:
+  backdrops-share:
     image: dockurr/samba
-    container_name: tyr-lab-backdrops-share
     restart: unless-stopped
     volumes:
       - ${BACKDROPS_FOLDER}:/storage
     networks:
-      lan:
+      lan-net:
         ipv4_address: ${BACKDROPS_SHARE_IP}
     environment:
       NAME: backdrops
@@ -174,9 +169,8 @@ services:
       UID: 1000
       GID: 1000
 
-  tyr-lab-prowlarr:
+  prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
-    container_name: tyr-lab-prowlarr
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -184,26 +178,24 @@ services:
     volumes:
       - ${CONFIGS_FOLDER}/prowlarr:/config
     restart: unless-stopped
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:9696 || exit 1"]
 
-  tyr-lab-flaresolverr:
+  flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
-    container_name: tyr-lab-flaresolverr
     environment:
       - LOG_LEVEL=${LOG_LEVEL:-info}
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
       - TZ=${TIMEZONE}
     restart: unless-stopped
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:8191 || exit 1"]
 
-  tyr-lab-sonarr:
+  sonarr:
     image: lscr.io/linuxserver/sonarr:latest
-    container_name: tyr-lab-sonarr
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -214,13 +206,12 @@ services:
       - ${COLD_FOLDER}:/cold
       #- ${HOT_FOLDER}:/data # For compatibility.
     restart: unless-stopped
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:8989 || exit 1"]
 
-  tyr-lab-radarr:
+  radarr:
     image: lscr.io/linuxserver/radarr:latest
-    container_name: tyr-lab-radarr
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -231,13 +222,12 @@ services:
       - ${COLD_FOLDER}:/cold
       #- ${HOT_FOLDER}:/data # For compatibility.
     restart: unless-stopped
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:7878 || exit 1"]
 
-  tyr-lab-bazarr:
+  bazarr:
     image: lscr.io/linuxserver/bazarr:latest
-    container_name: tyr-lab-bazarr
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -248,13 +238,12 @@ services:
       - ${COLD_FOLDER}:/cold
       #- ${HOT_FOLDER}:/data # For compatibility.
     restart: unless-stopped
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:6767 || exit 1"]
 
-  tyr-lab-qbittorrent:
+  qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
-    container_name: tyr-lab-qbittorrent
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -265,27 +254,25 @@ services:
       - ${COLD_FOLDER}:/cold
       #- ${HOT_FOLDER}:/data # For compatibility.
     restart: unless-stopped
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:8080 || exit 1"]
 
-  tyr-lab-seerr:
+  seerr:
     image: ghcr.io/seerr-team/seerr:latest
     init: true
-    container_name: tyr-lab-seerr
     environment:
       - LOG_LEVEL=debug
       - TZ=${TIMEZONE}
     volumes:
       - ${CONFIGS_FOLDER}/seerr:/app/config
     restart: unless-stopped
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     healthcheck:
       test: wget --no-verbose --tries=1 --spider http://localhost:5055/api/v1/status || exit 1
 
-  tyr-lab-jellyfin:
+  jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
-    container_name: tyr-lab-jellyfin
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -298,7 +285,7 @@ services:
       - ${COLD_FOLDER}:/cold
       #- ${HOT_FOLDER}:/data # For compatibility.
     restart: unless-stopped
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     deploy:
       resources:
         reservations:
@@ -309,9 +296,8 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:8096 || exit 1"]
 
-  tyr-lab-kavita:
+  kavita:
     image: lscr.io/linuxserver/kavita:latest
-    container_name: tyr-lab-kavita
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -322,27 +308,25 @@ services:
       - ${COLD_FOLDER}:/cold
       #- ${HOT_FOLDER}:/data # For compatibility.
     restart: unless-stopped
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     healthcheck:
       test: ["CMD-SHELL", "curl http://localhost:5000 || exit 1"]
 
-  tyr-lab-jellystat-db:
+  jellystat-db:
     image: 'postgres:15.2'
     shm_size: 1gb
-    container_name: tyr-lab-jellystat-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
       - ${CONFIGS_FOLDER}/jellystat/pg:/var/lib/postgresql/data
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
 
-  tyr-lab-jellystat:
+  jellystat:
     image: 'cyfershepard/jellystat:latest'
-    container_name: tyr-lab-jellystat
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -353,14 +337,13 @@ services:
       TZ: ${TIMEZONE}
     volumes:
       - ${CONFIGS_FOLDER}/jellystat/config:/app/config
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     depends_on:
-      - tyr-lab-jellystat-db
+      - jellystat-db
 
-  tyr-lab-kapowarr:
-    container_name: tyr-lab-kapowarr
+  kapowarr:
     image: mrcas/kapowarr:latest
-    network_mode: service:tyr-lab-gateway
+    network_mode: service:gateway
     restart: unless-stopped
     volumes:
       - ${CONFIGS_FOLDER}/kapowarr:/app/db
