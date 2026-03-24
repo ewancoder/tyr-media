@@ -128,16 +128,12 @@ services:
   adguard:
     image: adguard/adguardhome:latest
     restart: unless-stopped
-    ports:
-      - 53:53/tcp
-      - 53:53/udp
-      - ${ADGUARD_SETUP_PORT}:3000/tcp
-      - ${ADGUARD_WEB_PORT}:80/tcp
     volumes:
       - ${CONFIGS_FOLDER}/adguard/work:/opt/adguardhome/work
       - ${CONFIGS_FOLDER}/adguard/conf:/opt/adguardhome/conf
     networks:
-      - local-net
+      lan-net:
+        ipv4_address: ${ADGUARD_IP}
     healthcheck:
       test: ["CMD-SHELL", "wget --spider http://127.0.0.1:80 || exit 1"]
 
