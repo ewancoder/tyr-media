@@ -65,6 +65,8 @@ services:
       HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_HOSTNAME}
       PUID: ${USER_ID}
       PGID: ${GROUP_ID}
+    env_file:
+      - .env
     ports:
       - ${HOMEPAGE_PORT}:3000
     volumes:
