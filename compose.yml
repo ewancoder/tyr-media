@@ -34,6 +34,7 @@ services:
   # This container can be transformed into a VPN-container, to enable VPN for everything.
   gateway:
     image: alpine:latest
+    container_name: ${STACK}-gateway
     command: sleep infinity
     restart: unless-stopped
     networks:
@@ -59,6 +60,7 @@ services:
 
   homepage:
     image: ghcr.io/gethomepage/homepage:latest
+    container_name: ${STACK}-homepage
     environment:
       HOMEPAGE_ALLOWED_HOSTS: ${HOMEPAGE_HOSTNAME}
       PUID: ${USER_ID}
@@ -99,6 +101,7 @@ services:
 
   glances:
     image: 'nicolargo/glances:ubuntu-latest-full'
+    container_name: ${STACK}-glances
     pid: host
     privileged: true
     environment:
@@ -127,6 +130,7 @@ services:
 
   adguard:
     image: adguard/adguardhome:latest
+    container_name: ${STACK}-adguard
     restart: unless-stopped
     volumes:
       - ${CONFIGS_FOLDER}/adguard/work:/opt/adguardhome/work
@@ -139,6 +143,7 @@ services:
 
   backdrops-sync:
     image: alpine:latest
+    container_name: ${STACK}-backdrops-sync
     environment:
       - JELLYFIN_API_KEY=${JELLYFIN_API_KEY}
     command: sh -c 'apk add curl jq && while true; do /backdrops-sync.sh; sleep 300; done'
@@ -152,6 +157,7 @@ services:
 
   backdrops-share:
     image: dockurr/samba
+    container_name: ${STACK}-backdrops-share
     restart: unless-stopped
     volumes:
       - ${BACKDROPS_FOLDER}:/storage
@@ -167,6 +173,7 @@ services:
 
   prowlarr:
     image: lscr.io/linuxserver/prowlarr:latest
+    container_name: ${STACK}-prowlarr
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -180,6 +187,7 @@ services:
 
   flaresolverr:
     image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: ${STACK}-flaresolverr
     environment:
       - LOG_LEVEL=${LOG_LEVEL:-info}
       - LOG_HTML=${LOG_HTML:-false}
@@ -192,6 +200,7 @@ services:
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
+    container_name: ${STACK}-sonarr
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -208,6 +217,7 @@ services:
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
+    container_name: ${STACK}-radarr
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -224,6 +234,7 @@ services:
 
   bazarr:
     image: lscr.io/linuxserver/bazarr:latest
+    container_name: ${STACK}-bazarr
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -240,6 +251,7 @@ services:
 
   qbittorrent:
     image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: ${STACK}-qbittorrent
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -256,6 +268,7 @@ services:
 
   seerr:
     image: ghcr.io/seerr-team/seerr:latest
+    container_name: ${STACK}-seerr
     init: true
     environment:
       - LOG_LEVEL=debug
@@ -269,6 +282,7 @@ services:
 
   jellyfin:
     image: lscr.io/linuxserver/jellyfin:latest
+    container_name: ${STACK}-jellyfin
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -294,6 +308,7 @@ services:
 
   kavita:
     image: lscr.io/linuxserver/kavita:latest
+    container_name: ${STACK}-kavita
     environment:
       - PUID=${USER_ID}
       - PGID=${GROUP_ID}
@@ -310,6 +325,7 @@ services:
 
   jellystat-db:
     image: 'postgres:15.2'
+    container_name: ${STACK}-jellystat-db
     shm_size: 1gb
     restart: unless-stopped
     environment:
@@ -323,6 +339,7 @@ services:
 
   jellystat:
     image: 'cyfershepard/jellystat:latest'
+    container_name: ${STACK}-jellystat
     restart: unless-stopped
     environment:
       POSTGRES_USER: postgres
@@ -339,6 +356,7 @@ services:
 
   kapowarr:
     image: mrcas/kapowarr:latest
+    container_name: ${STACK}-kapowarr
     network_mode: service:gateway
     restart: unless-stopped
     volumes:
